@@ -48,7 +48,6 @@ public class StandaloneScene : MonoBehaviour
     private string m_fileName;
     private List<string> m_magnetNameList;
     private int childMagnetCount = 0;
-    private bool m_debug = true;
     private int m_currentMagnetDropdownPosition = -1;
     // Start is called before the first frame update
     private bool m_lastMagnetActiveToggleStatus;

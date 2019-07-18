@@ -65,6 +65,7 @@
     <Compile Include="Assets\RW\Scripts\ColorClassifier.cs" />
     <Compile Include="Assets\RW\Scripts\CSVReader.cs" />
     <Compile Include="Assets\RW\Scripts\DynamicPointToPointLineRender.cs" />
+    <Compile Include="Assets\RW\Scripts\FileManager.cs" />
     <Compile Include="Assets\RW\Scripts\GraphicalUserInterfaceController.cs" />
     <Compile Include="Assets\RW\Scripts\InitOpenVRForVive.cs" />
     <Compile Include="Assets\RW\Scripts\IntroductionScene.cs" />
