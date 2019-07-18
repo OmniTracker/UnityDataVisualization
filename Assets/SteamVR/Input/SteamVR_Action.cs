@@ -320,16 +320,10 @@ namespace Valve.VR
         /// </summary>
         public CreateType GetCopy<CreateType>() where CreateType : SteamVR_Action, new()
         {
-            if (SteamVR_Input.ShouldMakeCopy()) //no need to make copies at runtime
-            {
-                CreateType action = new CreateType();
-                action.InitializeCopy(this.actionPath, this.GetSourceMap());
-                return action;
-            }
-            else
-            {
-                return (CreateType)this;
-            }
+            CreateType action = new CreateType();
+            action.InitializeCopy(this.actionPath, this.GetSourceMap());
+            return action;
+            //return (CreateType)this; //no need to make copies in builds - will reduce memory alloc //todo: having this enabled was not working. all sets were the same (maybe actions too)
         }
 
         public abstract string TryNeedsInitData();
@@ -452,10 +446,6 @@ namespace Valve.VR
             if (ReferenceEquals(null, other))
                 return false;
 
-            //SteamVR_Action_Source_Map thisMap = this.GetSourceMap();
-            //SteamVR_Action_Source_Map otherMap = other.GetSourceMap();
-
-            //return this.actionPath == other.actionPath && thisMap.fullPath == otherMap.fullPath;
             return this.actionPath == other.actionPath;
         }
 
@@ -547,16 +537,6 @@ namespace Valve.VR
             }
 
             return cachedShortName;
-        }
-
-        public void ShowOrigins()
-        {
-            OpenVR.Input.ShowActionOrigins(actionSet.handle, handle);
-        }
-
-        public void HideOrigins()
-        {
-            OpenVR.Input.ShowActionOrigins(0,0);
         }
     }
 

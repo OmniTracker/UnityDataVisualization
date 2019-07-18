@@ -171,15 +171,6 @@ namespace Valve.VR
                     return null;
                 }
 
-                OpenVR.GetGenericInterface(OpenVR.IVRInput_Version, ref error);
-                if (error != EVRInitError.None)
-                {
-                    initializedState = InitializedStates.InitializeFailure;
-                    ReportError(error);
-                    SteamVR_Events.Initialized.Send(false);
-                    return null;
-                }
-
                 settings = SteamVR_Settings.instance;
 
                 if (Application.isEditor)

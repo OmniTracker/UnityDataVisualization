@@ -55,7 +55,6 @@ namespace Valve.VR
             }
         }
 
-
         #region array accessors
         /// <summary>An array of all action sets</summary>
         public static SteamVR_ActionSet[] actionSets;
@@ -915,7 +914,7 @@ namespace Valve.VR
                     if (actionSetsByPathLowered.ContainsKey(loweredPath))
                     {
                         actionSetsByPathCache.Add(path, actionSetsByPathLowered[loweredPath]);
-                        return actionSetsByPathLowered[loweredPath].GetCopy<T>();
+                        return actionSetsByPath[loweredPath].GetCopy<T>();
                     }
                     else
                     {
@@ -1031,7 +1030,7 @@ namespace Valve.VR
         /// <returns>True when the action was true last update and is now false. Returns false again afterwards.</returns>
         public static bool GetStateUp(string action, SteamVR_Input_Sources inputSource, bool caseSensitive = false)
         {
-            return GetStateUp(null, action, inputSource, caseSensitive);
+            return GetStateDown(null, action, inputSource, caseSensitive);
         }
         #endregion
 
@@ -1219,13 +1218,6 @@ namespace Valve.VR
             return null;
         }
 
-        internal static bool ShouldMakeCopy()
-        {
-            bool shouldMakeCopy = SteamVR_Behaviour.isPlaying == false;
-
-            return shouldMakeCopy;
-        }
-
         /// <summary>
         /// Gets the localized name of the device that the action corresponds to. 
         /// </summary>
@@ -1264,12 +1256,6 @@ namespace Valve.VR
 
             if (File.Exists(fullPath))
             {
-                if (OpenVR.Input == null)
-                {
-                    Debug.LogError("<b>[SteamVR]</b> Could not instantiate OpenVR Input interface.");
-                    return;
-                }
-
                 EVRInputError err = OpenVR.Input.SetActionManifestPath(fullPath);
                 if (err != EVRInputError.None)
                     Debug.LogError("<b>[SteamVR]</b> Error loading action manifest into SteamVR: " + err.ToString());

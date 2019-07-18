@@ -348,6 +348,8 @@ namespace Valve.VR.InteractionSystem
 					break;
 			}
 
+
+            /* 
 			//Create the text hint object
 			Vector3 hintStartPos = hintInfo.localTransform.position + ( hintInfo.localTransform.forward * 0.01f );
 			hintInfo.textHintObject = GameObject.Instantiate( textHintPrefab, hintStartPos, Quaternion.identity ) as GameObject;
@@ -386,12 +388,14 @@ namespace Valve.VR.InteractionSystem
 			hintInfo.textStartAnchor.transform.localScale = Vector3.Scale( hintInfo.textStartAnchor.transform.localScale, player.transform.localScale );
 			hintInfo.textEndAnchor.transform.localScale = Vector3.Scale( hintInfo.textEndAnchor.transform.localScale, player.transform.localScale );
 			hintInfo.line.transform.localScale = Vector3.Scale( hintInfo.line.transform.localScale, player.transform.localScale );
-		}
+            */
+    }
 
 
 		//-------------------------------------------------
 		private void ComputeTextEndTransforms()
 		{
+            /*
 			//This is done as a separate step after all the ButtonHintInfos have been initialized
 			//to make the text hints fan out appropriately based on the button's position on the controller.
 
@@ -436,6 +440,7 @@ namespace Valve.VR.InteractionSystem
                 }
 				hintInfo.Value.canvasOffset.localRotation = Quaternion.identity;
 			}
+            */
 		}
 
 

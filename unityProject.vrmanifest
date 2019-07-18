@@ -2,10 +2,10 @@
   "source": "Unity",
   "applications": [
     {
-      "app_key": "application.generated.unity.portingproject.exe",
+      "app_key": "application.generated.unity.newunityproject.exe",
       "launch_type": "url",
       "url": "steam://launch/",
-      "action_manifest_path": "C:\\Users\\avd\\Documents\\Ronald\\New Unity Project\\actions.json",
+      "action_manifest_path": "C:\\Users\\avd\\Documents\\RonaldVR\\UnityDataVisualization\\actions.json",
       "strings": {
         "en_us": {
           "name": "New Unity Project [Testing]"

@@ -39,34 +39,18 @@ public class FileManager : MonoBehaviour
         GetFile();
     }
 
-    void GetFile ()
+    public void GetFile ()
     {
         if (path != null)
         {
+
+            Debug.Log(path); 
             UpdateCSVFile();
         }
     }
 
-    void UpdateCSVFile ()
+    public void UpdateCSVFile ()
     {
-        WWW www;
-
-        string operatingSystem = SystemInfo.operatingSystem;
-
-        if (operatingSystem.Contains("Windows"))
-        {
-            
-        }
-        else if (operatingSystem.Contains("Mac"))
-        {
-
-        }
-        else
-        {
-            return;
-        }
-
-        www.
 
 
 

@@ -45,6 +45,13 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     public Toggle AllowColorClassifier;
     public Toggle AllowSpringVisibility;
     public Toggle AllowPointSelectionAndMovement;
+    public Toggle EnableGUICanvas;
+    public Toggle EnablePointSelectionResize;
+
+
+    public Button RevertToPreviousScene;
+    public Button RestartScene;
+
 
     // Public
     public Text MagnetDataMenu;
