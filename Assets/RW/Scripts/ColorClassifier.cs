@@ -11,6 +11,8 @@
  *      Revision History:
  *      
  *      (7/11/2019) - Software Refactor - This file was generated to handle the
+ *                    color of the magnets and also the color correlation for 
+ *                    each of the data points if the color classifier is enabled
  *-----------------------------------------------------------------------------
  * This program is free software: you can redistribute it and/or modify it 
  * under the terms of the GNU General Public License as published by the Free 
@@ -35,7 +37,51 @@ public class ColorClassifier : MonoBehaviour
     public GameObject PointHolder;
     // Object which will contain instantiated prefabs in hiearchy
     public GameObject MagnetHolder;
+    private int m_MagnetHolderCount = 0;
+    // List of known colors we will use to color the magnet.
+    private List<Color> colorList;
 
+    /// <summary>
+    /// Upon starting, all the color we will use to color all the magnets will be 
+    /// set in this function.
+    /// </summary>
+    private void Start()
+    {
+        // Set all the known color we will use.
+        colorList = new List<Color>();
+
+
+
+    }
+
+    /// <summary>
+    /// Used to generate a random color based of the min and max values
+    /// </summary>
+    /// <param name="minimum"> Minimum range value to produce a color</param>
+    /// <param name="maximum"> Maxium range value to produce a color.</param>
+    /// <returns></returns>
+    public static Color NextRandomColor (float minimum, float maximum, float alpha)
+    {
+        float minFloatColorValue = 0.0f;
+        float maxFloatColorValue = 1.0f;
+        // If the color values passed in are out of range, return a color value equal to white.
+        if ( ( minFloatColorValue < minimum && minimum < maxFloatColorValue) ||
+             (minFloatColorValue < maximum && maximum < maxFloatColorValue))
+        {
+            return new Color(0,0,0,1);
+        }
+        // If the minimum is higher than the max value, return a color of black.
+        // This decision was more so visually debugging purposes. 
+        if (minimum > maximum)
+        {
+            return new Color(1,1,1,1);
+        }
+        // Set the R,G,B,A
+        float r = Random.Range(minimum, maximum);
+        float g = Random.Range(minimum, maximum);
+        float b = Random.Range(minimum, maximum);
+        return new Color(r,g,b, 1.0f); 
+    }
 
 
     void Update()

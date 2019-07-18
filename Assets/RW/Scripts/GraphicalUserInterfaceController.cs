@@ -45,13 +45,13 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     public Toggle AllowColorClassifier;
     public Toggle AllowSpringVisibility;
     public Toggle AllowPointSelectionAndMovement;
+
+    // Allows the user to Show or hide the GUI
     public Toggle EnableGUICanvas;
     public Toggle EnablePointSelectionResize;
 
-
     public Button RevertToPreviousScene;
     public Button RestartScene;
-
 
     // Public
     public Text MagnetDataMenu;
@@ -60,20 +60,21 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     private List<string> m_magnetList;
     private string m_CSVFilename;
 
-
     private void Start()
     {
         m_magnetList = new List<string>();
     }
 
+    public void EnableGUIView ()
+    {
+        if (EnableGUICanvas.isOn == true)
+        {
+
+        }
 
 
 
-
-
-
-
-
-
+    }
 
 }
+

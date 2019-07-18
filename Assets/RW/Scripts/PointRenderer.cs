@@ -293,28 +293,15 @@ public class PointRenderer : MonoBehaviour
         float magnetRadius = 12;
         foreach (Transform childMagnet in MagnetHolder.transform)
         {
-
             // Calculates the x coordinate based of the predetermined angle, index, and specified magnet radius
             x = magnetRadius * (float)Math.Cos(angle * index);
-           
             // Calculates the z coordinate based of the predetermined angle, index, and specified magnet radius
             z = magnetRadius * (float)Math.Sin(angle * index);
-
-            // Used to set a different color for each of the magnets. Colors will be set according to the angle. 
-            // This is sorta the best way to ensure all the Magnets are different colors.
-            float colorValue;
-            colorValue = ((angle * index) / maxAngle);
-
-            Debug.Log("Color Value: " + colorValue + " Angle: " + colorValue);
-            childMagnet.GetComponent<Renderer>().material.color = new Color( 1 - colorValue, colorValue, angle * .001f, 0.3f);
-
             // Position point at relative to parent
             childMagnet.localPosition = new Vector3(x, 0, z);
-            childMagnet.localScale = new Vector3(magnetScale, magnetScale, magnetScale);
-            
+            childMagnet.localScale = new Vector3(magnetScale, magnetScale, magnetScale);   
             // Store the last position of the Magnets. This will be used somewhere else in the program.
             childMagnet.GetComponent<MagnetAttributes>().LastPosition = childMagnet.transform.position;
-
             // Increment to the next point placement index
             index += 1;
         }
