@@ -209,6 +209,12 @@ public class Raycaster : MonoBehaviour
                 gameObject.GetComponent<Toggle>().isOn = true;
             }
         }
+        else if (gameObject.name.Contains("LoadData"))
+        {
+            Debug.Log("Test");
+
+            FileManager.OpenExplore();
+        }
     }
     /// <summary>
     /// 

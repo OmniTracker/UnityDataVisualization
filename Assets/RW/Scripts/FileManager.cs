@@ -33,10 +33,12 @@ public class FileManager : MonoBehaviour
     string path;
     public RawImage image;
 
-    public void OpenExplore()
+    [UnityEditor.MenuItem("Window/Test OpenInFileBrowser")]
+    public static void OpenExplore()
     {
-        path = EditorUtility.OpenFilePanel("Overwrite with new CSV", "","csv");
-        GetFile();
+        Open(UnityEngine.Application.dataPath);
+
+        // string path = EditorUtility.OpenFilePanel("Overwrite with new CSV", "","csv");
     }
 
     public void GetFile ()
