@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/RW/Scenes/IntroductionScene.unity
+    guid: 51a904127d4b9f34dbfdf98743c772c1
+  - enabled: 1
+    path: Assets/RW/Scenes/StandaloneScene.unity
+    guid: 650c00768130b024da74325de6235077
+  - enabled: 1
+    path: Assets/RW/Scenes/ViveVRScene.unity
+    guid: e823e573a604765459bc417243cd46b1
   m_configObjects: {}
