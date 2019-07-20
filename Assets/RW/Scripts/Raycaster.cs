@@ -96,7 +96,7 @@ public class Raycaster : MonoBehaviour
         {
             MagnetAttributes attributes = GameObject.Find(MagnetNameDropDown.options[MagnetNameDropDown.value].text).GetComponent<MagnetAttributes>();
             MagnetActiveToggle.isOn = attributes.MagnetActive;
-            AllowMagnetismToggle.isOn = attributes.AllowMagnetism;
+            AllowMagnetismToggle.isOn = attributes.MagnetVisible;
             MagnetStrengthTextValue.text = attributes.MagnetismStrength.ToString();
             m_currentMagnetNameDropDownIndex = MagnetNameDropDown.value;
         }
@@ -183,7 +183,7 @@ public class Raycaster : MonoBehaviour
                 gameObject.GetComponent<Toggle>().isOn = true;
             }
             MagnetAttributes attributes = GameObject.Find(MagnetNameDropDown.options[MagnetNameDropDown.value].text).GetComponent<MagnetAttributes>();
-            attributes.AllowMagnetism = gameObject.GetComponent<Toggle>().isOn;
+            attributes.MagnetVisible = gameObject.GetComponent<Toggle>().isOn;
         }
         else if (gameObject.name.Contains("MagnetActiveToggle"))
         {

@@ -38,6 +38,7 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     public Dropdown YAxisDropDown;
     public Dropdown ZAxisDropDown;
     public Dropdown SelectMagnetDropDown;
+    private string m_PreviouslySelectedMagnet;
     public Dropdown DynamicPointRenderingDropDown;
     public Dropdown ColorCorrelationDropDown;
     public Dropdown ColorCorrelationAboveOrBelowMidPointDropDown;
@@ -81,17 +82,27 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         }
         else
         {
-            // Check to see if the Axis have changed.
-            if ((PointRender.XAxis != MagnetList[XAxisDropDown.value]) ||
-                (PointRender.YAxis != MagnetList[YAxisDropDown.value]) ||
-                (PointRender.ZAxis != MagnetList[ZAxisDropDown.value]) )
-            {
-                UpdateFileDataPlot();
-            }
+            CheckScatterPlotAttributesUI();
+            CheckMagnetAttributesUI();
 
         }
         PlotController.OrientLables();
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    private void CheckScatterPlotAttributesUI()
+    {
+        if ((PointRender.XAxis != MagnetList[XAxisDropDown.value]) ||
+            (PointRender.YAxis != MagnetList[YAxisDropDown.value]) ||
+            (PointRender.ZAxis != MagnetList[ZAxisDropDown.value]))
+        {
+            UpdateFileDataPlot();
+        }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
     private void UpdateFileDataPlot()
     {
         PointRender.SetScatterPlotAxis(InputCSVFilename,
@@ -121,6 +132,47 @@ public class GraphicalUserInterfaceController : MonoBehaviour
                                        PointHolder.transform);
         PointRender.PlacePrefabParticlePoints(PointHolder.transform);
         PointRender.PlaceMagnets(MagnetHolder.transform);
+
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    private void CheckMagnetAttributesUI ()
+    {
+        GameObject magnetObject = GameObject.Find(SelectMagnetDropDown.options[SelectMagnetDropDown.value].text); 
+        MagnetAttributes attributes = magnetObject.GetComponent<MagnetAttributes>();
+        // Check if the Magnet Dropdown has changed
+        if (attributes.name != m_PreviouslySelectedMagnet)
+        {
+            MagnetActiveToggle.isOn = attributes.MagnetActive;
+            MagnetVisible.isOn = attributes.MagnetVisible;
+            if (MagnetVisible.isOn == false)
+            {
+                magnetObject.SetActive(false);
+            }
+            else
+            {
+                magnetObject.SetActive(true);
+            }
+            m_PreviouslySelectedMagnet = attributes.name;
+        }
+        else
+        {
+            // Set
+            if (MagnetActiveToggle.isOn != attributes.MagnetActive)
+            {
+                attributes.MagnetActive = MagnetActiveToggle.isOn;
+            }
+
+            if (MagnetVisible.isOn != attributes.MagnetActive)
+            {
+
+            }
+
+        }
+
+
+          // SelectMagnetDropDown;
 
     }
     /// <summary>

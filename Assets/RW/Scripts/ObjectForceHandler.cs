@@ -114,7 +114,7 @@ public class ObjectForceHandler : MonoBehaviour
                 {
                     Vector3 direction = (childMagnet.GetComponent<MagnetAttributes>().CalculateDirection(childDataPoint.position)).normalized;
                     float dataPointValue = childDataPoint.GetComponent<ParticleAttributes>().KeyValue(childMagnet.name);
-                    if (childMagnet.GetComponent<MagnetAttributes>().AllowMagnetism)
+                    if (childMagnet.GetComponent<MagnetAttributes>().MagnetVisible)
                     {
                         childDataPoint.GetComponent<Rigidbody>().AddForce(direction *
                         childMagnet.GetComponent<MagnetAttributes>().CalculateAttractionForce(dataPointValue));

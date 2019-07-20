@@ -99,7 +99,7 @@ public class StandaloneScene : MonoBehaviour
                         m_currentMagnetDropdownPosition = MagnetNameDropDown.value;
                         // Set new Values
                         MagnetActiveToggle.isOn = attributes.MagnetActive;
-                        AllowMagnetismToggle.isOn = attributes.AllowMagnetism;
+                        AllowMagnetismToggle.isOn = attributes.MagnetVisible;
                         MagnetismStrengthSlider.value = attributes.MagnetismStrength;
                         // Store Last Values Stored
                         m_lastMagnetActiveToggleStatus = MagnetActiveToggle.isOn;
@@ -116,7 +116,7 @@ public class StandaloneScene : MonoBehaviour
                     GetComponent<MagnetAttributes>();
                 // Set new Values
                 attributes.MagnetActive = MagnetActiveToggle.isOn;
-                attributes.AllowMagnetism = AllowMagnetismToggle.isOn;
+                attributes.MagnetVisible = AllowMagnetismToggle.isOn;
                 attributes.MagnetismStrength = MagnetismStrengthSlider.value;
                 // Store Last Values Stored
                 m_lastMagnetActiveToggleStatus = MagnetActiveToggle.isOn;
