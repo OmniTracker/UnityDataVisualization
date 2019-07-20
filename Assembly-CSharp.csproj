@@ -74,7 +74,7 @@
     <Compile Include="Assets\RW\Scripts\MouseDrag.cs" />
     <Compile Include="Assets\RW\Scripts\ObjectForceHandler.cs" />
     <Compile Include="Assets\RW\Scripts\ParticleAttributes.cs" />
-    <Compile Include="Assets\RW\Scripts\PlotDataAndLabelController.cs" />
+    <Compile Include="Assets\RW\Scripts\PlotController.cs" />
     <Compile Include="Assets\RW\Scripts\PointRenderer.cs" />
     <Compile Include="Assets\RW\Scripts\Raycaster.cs" />
     <Compile Include="Assets\RW\Scripts\RevertToMainScreen.cs" />

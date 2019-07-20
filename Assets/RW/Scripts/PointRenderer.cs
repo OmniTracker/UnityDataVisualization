@@ -40,144 +40,66 @@
  */
 using System;
 using System.Collections.Generic;
-using UnityEngine.UI;
 using UnityEngine;
 
 public class PointRenderer : MonoBehaviour
 {
-    // The prefab for the data particlePoints that will be instantiated
-    public GameObject PointPrefab;
-    // Object which will contain instantiated prefabs in hiearchy
-    public GameObject PointHolder;
-    // The prefab for the data Magnet that will be instantiated
-    public GameObject MagnetPrefab;
-    // Object which will contain instantiated prefabs in hiearchy
-    public GameObject MagnetHolder;
-    // Used to get the new axis for new graph
-    public Dropdown XCoordinateDropDown;
-    public Dropdown YCoordinateDropDown;
-    public Dropdown ZCoordinateDropDown;
-
-
-    // Name of the input file, no extension
-    public string InputFile;
     // Full column names from CSV (as Dictionary Keys)
-    private string m_XColumn;
-    private string m_YColumn;
-    private string m_ZColumn;
+    private string m_XAxis;
+    private string m_YAxis;
+    private string m_ZAxis;
+    // Minimum and maximum values of columns
+    private float m_XMin, m_YMin, m_ZMin, m_XMax, m_YMax, m_ZMax;
     // Scale of particlePoints within graph, WARNING: Does not scale with graph frame
     private readonly float plotScale = 10;
     private readonly float pointScale = 0.20f;
     private readonly float magnetScale = 0.30f;
-    //********Private Variables********
-    // Minimum and maximum values of columns
-    private float m_XMin, m_YMin, m_ZMin, m_XMax, m_YMax, m_ZMax;
-    // List for holding data from CSV reader
-    private List<Dictionary<string, object>> pointList;
-    // Store dictionary keys (column names in CSV) in a list
-    private List<string> m_columnList;
-    private bool m_renderColorForPoints = true;
-
+    public string XAxis { get => m_XAxis; set => m_XAxis = value; }
+    public string YAxis { get => m_YAxis; set => m_YAxis = value; }
+    public string ZAxis { get => m_ZAxis; set => m_ZAxis = value; }
+    public float XMin { get => m_XMin; set => m_XMin = value; }
+    public float YMin { get => m_YMin; set => m_YMin = value; }
+    public float ZMin { get => m_ZMin; set => m_ZMin = value; }
+    public float XMax { get => m_XMax; set => m_XMax = value; }
+    public float YMax { get => m_YMax; set => m_YMax = value; }
+    public float ZMax { get => m_ZMax; set => m_ZMax = value; }
     /// <summary>
-    /// News the plot.
+    /// Assign all the label for the scatter plot axis
     /// </summary>
-    /// <param name="column1">Column1.</param>
-    /// <param name="column2">Column2.</param>
-    /// <param name="column3">Column3.</param>
-    public void NewPlot(int column1, int column2, int column3)
+    /// <param name="inputFile"></param>
+    /// <param name="xAxis"></param>
+    /// <param name="yAxis"></param>
+    /// <param name="zAxis"></param>
+    /// <param name="pointHolderTransform"></param>
+    public void SetScatterPlotAxis(string inputFile, string xAxis, string yAxis, string zAxis, 
+                                    Transform pointHolderTransform)
     {
-        //Run CSV Reader
-        pointList = CSVReader.Read(InputFile);
-        // Store dictionary keys (column names in CSV) in a list
-        m_columnList = new List<string>(pointList[1].Keys);
-
-        // Generate all the data points first
-        GeneratePrefabParticlePoints();
-        // Generate all the magnets next
-        GenerateMagnet();
-        // Set global column names 
-        m_XColumn = m_columnList[column1];
-        m_YColumn = m_columnList[column2];
-        m_ZColumn = m_columnList[column3];
-        // Set min and x values for all coordinates
-        SetPlotMinumumAndMaximumValues();
-        // Place all particle points based all collected data
-        PlacePrefabParticlePoints();
-        // Place all Particle Points based all collected data
-        PlaceMagnets();
-        // Assign all the label for the scatter plot axis
-        PlotDataAndLabelController.AssignLabels(m_XColumn, 
-                                                m_YColumn, 
-                                                m_ZColumn,
-                                                m_XMin, 
-                                                m_XMax, 
-                                                m_YMin, 
-                                                m_YMax, 
-                                                m_ZMin, 
-                                                m_ZMax, 
-                                                PointHolder.transform.childCount, 
-                                                InputFile);
-        // Clear all the data from the container. It is no longer needed at this point.
-        pointList.Clear();
-    }
-    /// <summary>
-    /// Load New Plot Axis. Changes the axis names along with the position of the actual data points
-    /// </summary>
-    public void LoadNewPlotAxis()
-    {
-        // Reset global column names 
-        m_XColumn = m_columnList[XCoordinateDropDown.value];
-        m_YColumn = m_columnList[YCoordinateDropDown.value];
-        m_ZColumn = m_columnList[ZCoordinateDropDown.value];
-        // Reset the new min and max values
-        SetPlotMinumumAndMaximumValues();
-        // Rearrange all particle points based all collected data
-        AlterPrefabParticlePoints();
-        // Reset the Labels for the 3D Scatterplot
-        PlotDataAndLabelController.AssignLabels(m_XColumn,
-                                         m_YColumn,
-                                         m_ZColumn,
-                                         m_XMin,
-                                         m_XMax,
-                                         m_YMin,
-                                         m_YMax,
-                                         m_ZMin,
-                                         m_ZMax,
-                                         PointHolder.transform.childCount,
-                                         InputFile);
-    }
-    /// <summary>
-    /// Simply sets the coordinate class members for the minimum and maximum values associated 
-    /// with the x,y,z axis.
-    /// </summary>
-    private void SetPlotMinumumAndMaximumValues()
-    {
-        m_XMin = PlotDataAndLabelController.FindMinimumValueFromDataPointContainer(PointHolder.transform, 
-                                                                                   m_XColumn);
-        m_YMin = PlotDataAndLabelController.FindMinimumValueFromDataPointContainer(PointHolder.transform, 
-                                                                                   m_YColumn);
-        m_ZMin = PlotDataAndLabelController.FindMinimumValueFromDataPointContainer(PointHolder.transform, 
-                                                                                   m_ZColumn);
-        m_XMax = PlotDataAndLabelController.FindMaximumValueFromDataPointContainer(PointHolder.transform, 
-                                                                                   m_XColumn);
-        m_YMax = PlotDataAndLabelController.FindMaximumValueFromDataPointContainer(PointHolder.transform, 
-                                                                                   m_YColumn);
-        m_ZMax = PlotDataAndLabelController.FindMaximumValueFromDataPointContainer(PointHolder.transform, 
-                                                                                   m_ZColumn);
+        int pointCount = pointHolderTransform.childCount;
+        XAxis = xAxis;
+        YAxis = yAxis;
+        ZAxis = zAxis;
+        XMin = PlotController.FindMinimumValueFromDataPointContainer(pointHolderTransform, XAxis);
+        YMin = PlotController.FindMinimumValueFromDataPointContainer(pointHolderTransform, YAxis);
+        ZMin = PlotController.FindMinimumValueFromDataPointContainer(pointHolderTransform, ZAxis);
+        XMax = PlotController.FindMaximumValueFromDataPointContainer(pointHolderTransform, XAxis);
+        YMax = PlotController.FindMaximumValueFromDataPointContainer(pointHolderTransform, YAxis);
+        ZMax = PlotController.FindMaximumValueFromDataPointContainer(pointHolderTransform, ZAxis);
+        PlotController.AssignLabels(XAxis,YAxis,ZAxis,XMin,XMax,YMin,YMax,ZMin,ZMax, pointCount,
+                                               inputFile);
     }
     /// <summary>
     /// Alter Prefab Particle Points to new plotted position.
     /// </summary>
-    private void AlterPrefabParticlePoints()
+    public void AlterPrefabParticlePoints(Transform pointHolderTransform)
     {
         // These values are up updated corresponding to the location
         float x, y, z;
         // Iterate and alter the positions of each of the particles stored in the point holder.
-        foreach (Transform childDataPoint in PointHolder.transform)
+        foreach (Transform childDataPoint in pointHolderTransform)
         {
-            x = (childDataPoint.GetComponent<ParticleAttributes>().KeyValue(m_XColumn) - m_XMin) / (m_XMax - m_XMin);
-            y = (childDataPoint.GetComponent<ParticleAttributes>().KeyValue(m_YColumn) - m_YMin) / (m_YMax - m_YMin);
-            z = (childDataPoint.GetComponent<ParticleAttributes>().KeyValue(m_ZColumn) - m_ZMin) / (m_ZMax - m_ZMin);
+            x = (childDataPoint.GetComponent<ParticleAttributes>().KeyValue(XAxis) - XMin) / (XMax - XMin);
+            y = (childDataPoint.GetComponent<ParticleAttributes>().KeyValue(YAxis) - YMin) / (YMax - YMin);
+            z = (childDataPoint.GetComponent<ParticleAttributes>().KeyValue(ZAxis) - ZMin) / (ZMax - ZMin);
             childDataPoint.localScale = new Vector3(pointScale, pointScale, pointScale);
             childDataPoint.GetComponent<ParticleAttributes>().OriginLocation = (new Vector3(x, y, z) * plotScale) + childDataPoint.transform.parent.localPosition;
             // Sets color according to x/y/z value
@@ -186,53 +108,52 @@ public class PointRenderer : MonoBehaviour
         }
     }
     /// <summary>
-    /// Generate Prefab Particle Points
+    /// 
     /// </summary>
-    private void GeneratePrefabParticlePoints()
+    /// <param name="pointList"></param>
+    /// <param name="magnetList"></param>
+    /// <param name="pointHolder"></param>
+    /// <param name="pointPrefab"></param>
+    public void GeneratePrefabParticlePoints(List<Dictionary<string, object>> pointList, List<string> magnetList,  GameObject pointHolder, GameObject pointPrefab)
     {
         // Store all data from files in data point
         for (var i = 0; i < pointList.Count; i++)
         {
             //instantiate as gameobject variable so that it can be manipulated within loop
-            GameObject dataPoint = Instantiate(PointPrefab, Vector3.zero, Quaternion.identity);
-
+            GameObject dataPoint = Instantiate(pointPrefab, Vector3.zero, Quaternion.identity);
             // Assigns name to the prefab
             dataPoint.transform.name = i.ToString();
-            
             // Instantiate empty dictionary for particle data points
             dataPoint.GetComponent<ParticleAttributes>().PointData = new Dictionary<string, float>();
-            
             // Iterate through the names of the columns to set the associated values
-            foreach (string key in m_columnList)
+            foreach (string key in magnetList)
             {
                 dataPoint.GetComponent<ParticleAttributes>().PointData.Add(key, Convert.ToSingle(pointList[i][key]));
                 // I have no idea why the program fails if this line isn't here. I think it may be a race condition but not sure
                 Debug.Log(dataPoint.GetComponent<ParticleAttributes>().PointData);
             }
-            
             // Disable Gravity
             dataPoint.GetComponent<Rigidbody>().useGravity = false;
-            
             // Set the Drag value in the Rigidboby
             dataPoint.GetComponent<Rigidbody>().drag = 0.5f;
-            
             // Make child of PointHolder object, to keep particlePoints within container in hiearchy
-            dataPoint.transform.SetParent(PointHolder.transform);
+            dataPoint.transform.SetParent(pointHolder.transform);
         }
     }
     /// <summary>
-    /// Places the prefab points.
+    /// 
     /// </summary>
-	private void PlacePrefabParticlePoints()
+    /// <param name="pointHolderTransform"></param>
+	public void PlacePrefabParticlePoints(Transform pointHolderTransform)
     {
         float x, y, z;
         // Iterate and alter the positions of each of the particles stored in the point holder.
-        foreach (Transform childDataPoint in PointHolder.transform)
+        foreach (Transform childDataPoint in pointHolderTransform)
         {
             // Normalize the data points to fit on the scatter plot.
-            x = (childDataPoint.GetComponent<ParticleAttributes>().KeyValue(m_XColumn) - m_XMin) / (m_XMax - m_XMin);
-            y = (childDataPoint.GetComponent<ParticleAttributes>().KeyValue(m_YColumn) - m_YMin) / (m_YMax - m_YMin);
-            z = (childDataPoint.GetComponent<ParticleAttributes>().KeyValue(m_ZColumn) - m_ZMin) / (m_ZMax - m_ZMin);
+            x = (childDataPoint.GetComponent<ParticleAttributes>().KeyValue(XAxis) - XMin) / (XMax - XMin);
+            y = (childDataPoint.GetComponent<ParticleAttributes>().KeyValue(YAxis) - YMin) / (YMax - YMin);
+            z = (childDataPoint.GetComponent<ParticleAttributes>().KeyValue(ZAxis) - ZMin) / (ZMax - ZMin);
             childDataPoint.localPosition = new Vector3(x, y, z) * plotScale;
             childDataPoint.localScale = new Vector3(pointScale, pointScale, pointScale);
             // Sets color according to x/y/z value
@@ -240,53 +161,52 @@ public class PointRenderer : MonoBehaviour
         }
     }
     /// <summary>
-    /// Generates Magnet game objects.
+    /// 
     /// </summary>
-    private void GenerateMagnet()
+    /// <param name="magnetList"></param>
+    /// <param name="magnetHolder"></param>
+    /// <param name="magnetPrefab"></param>
+    /// <param name="pointHolder"></param>
+    public void GenerateMagnets(List<string> magnetList, GameObject magnetHolder, GameObject magnetPrefab, GameObject pointHolder)
     {
         float minPointValue, maxPointValue;
         // Iterate though the column list to create the individual magnets
-        foreach (string key in m_columnList)
+        foreach (string key in magnetList)
         {
             //instantiate as gameobject variable so that it can be manipulated within loop
-            GameObject magnet = Instantiate(MagnetPrefab, Vector3.zero, Quaternion.identity);
-
+            GameObject magnet = Instantiate(magnetPrefab, Vector3.zero, Quaternion.identity);
             // Min and Max values for attraction 
-            minPointValue = PlotDataAndLabelController.FindMinimumValueFromDataPointContainer(PointHolder.transform, key);
-            maxPointValue = PlotDataAndLabelController.FindMaximumValueFromDataPointContainer(PointHolder.transform, key);
+            minPointValue = PlotController.FindMinimumValueFromDataPointContainer(pointHolder.transform, key);
+            maxPointValue = PlotController.FindMaximumValueFromDataPointContainer(pointHolder.transform, key);
             magnet.GetComponent<MagnetAttributes>().MinValue = minPointValue;
             magnet.GetComponent<MagnetAttributes>().MaxValue = maxPointValue;
-
             // Set the name of the hovering label
             magnet.transform.Find("Name").GetComponent<TextMesh>().text = key;
-
             // Set rigidbody component attributes
             magnet.GetComponent<Rigidbody>().useGravity = false;
             magnet.GetComponent<Rigidbody>().drag = 20;
-
             // Assigns name to the magnet
             magnet.name = key;
-            
             // Make child of PointHolder object, to keep particlePoints within container in hiearchy
-            magnet.transform.SetParent(MagnetHolder.transform);
-
+            magnet.transform.SetParent(magnetHolder.transform);
             // Set the Mass of the given rigid body to something large to keep the magnets from moving.
             magnet.GetComponent<Rigidbody>().mass = 1000;
         }
     }
     /// <summary>
-    /// Place Magnets
+    /// 
     /// </summary>
-    private void PlaceMagnets()
+    /// <param name="magnetHolderTransform"></param>
+    public void PlaceMagnets(Transform magnetHolderTransform)
     {
         float x,z;
         // Index is used for the placement of the Magnet gameobjects. The math basically works
         // out to disperse the magnets in a circle around the scatterplot.
         float index = 0;
         float maxAngle = 360;
-        float angle = (maxAngle / MagnetHolder.transform.childCount);
+        float angle = (maxAngle / magnetHolderTransform.childCount);
         float magnetRadius = 12;
-        foreach (Transform childMagnet in MagnetHolder.transform)
+        foreach (Transform childMagnet in magnetHolderTransform)
         {
             // Calculates the x coordinate based of the predetermined angle, index, and specified magnet radius
             x = magnetRadius * (float)Math.Cos(angle * index);
@@ -300,12 +220,5 @@ public class PointRenderer : MonoBehaviour
             // Increment to the next point placement index
             index += 1;
         }
-    }
-    /// <summary>
-    /// Fixed update is used to handle the orientation of all game objects with the tag "Label"
-    /// </summary>
-    private void Update()
-    {
-        PlotDataAndLabelController.OrientLables();
     }
 }

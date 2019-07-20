@@ -655,33 +655,6 @@ namespace Valve.VR.InteractionSystem
 		private void ShowText(ISteamVR_Action_In_Source action, string text, bool highlightButton = true )
         {
 
-            /*
-            if ( actionHintInfos.ContainsKey(action) )
-            {
-                ActionHintInfo hintInfo = actionHintInfos[action];
-				hintInfo.textHintObject.SetActive( true );
-				hintInfo.textHintActive = true;
-
-				if ( hintInfo.text != null )
-				{
-					hintInfo.text.text = text;
-				}
-
-				if ( hintInfo.textMesh != null )
-				{
-					hintInfo.textMesh.text = text;
-				}
-
-				UpdateTextHint( hintInfo );
-
-				if ( highlightButton )
-				{
-					ShowButtonHint(action);
-				}
-
-				renderModel.gameObject.SetActive( true );
-			}
-            */
 		}
 
 

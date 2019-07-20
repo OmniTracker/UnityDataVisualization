@@ -22,7 +22,6 @@
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
@@ -34,7 +33,6 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     public GameObject MagnetPrefab;
     public GameObject PointHolder;
     public GameObject PointPrefab;
-
     // Public Dropdown menus
     public Dropdown XAxisDropDown;
     public Dropdown YAxisDropDown;
@@ -56,20 +54,19 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     public Text MagnetDataMenu;
     public Text PointDataMenu;
     // Set the first data file that needs to be loaded
-    public string m_InputCSVFilename;
+    public string InputCSVFilename;
     private List<string> m_MagnetList;
-    private bool m_DataFileLoaded = false;
+    private bool m_NewDataFileLoaded = true;
     PointRenderer m_PointRender;
-
-    public bool DataFileLoaded { get => m_DataFileLoaded; set => m_DataFileLoaded = value; }
+    public bool NewDataFileLoaded { get => m_NewDataFileLoaded; set => m_NewDataFileLoaded = value; }
     public List<string> MagnetList { get => m_MagnetList; set => m_MagnetList = value; }
-
+    public PointRenderer PointRender { get => m_PointRender; set => m_PointRender = value; }
     /// <summary>
     /// 
     /// </summary>
     private void Start()
     {
-        m_PointRender = new PointRenderer();
+        PointRender = new PointRenderer();
         MagnetList = new List<string>();
     }
     /// <summary>
@@ -77,21 +74,49 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (DataFileLoaded == false)
+        if (NewDataFileLoaded == true)
         {
-            UpdateDataView();
-            DataFileLoaded = true;
+            SetFileDataPlot();
+            NewDataFileLoaded = false;
         }
+        else
+        {
+            // Check to see if the Axis have changed.
+
+
+
+        }
+
+        PlotController.OrientLables();
+    }
+
+
+    private void UpdateFileDataPlot()
+    {
+        PointRender.SetScatterPlotAxis(InputCSVFilename,
+                                       MagnetList[XAxisDropDown.value],
+                                       MagnetList[YAxisDropDown.value],
+                                       MagnetList[ZAxisDropDown.value],
+                                       PointHolder.transform);
+        PointRender.AlterPrefabParticlePoints(PointHolder.transform);
     }
     /// <summary>
     /// 
     /// </summary>
-    private void UpdateDataView()
+    private void SetFileDataPlot()
     {
-        List<Dictionary<string, object>> pointList = CSVReader.Read(m_InputCSVFilename);
+        List<Dictionary<string, object>> pointList = CSVReader.Read(InputCSVFilename);
         MagnetList = new List<string>(pointList[1].Keys);
         FillDropDowns();
-
+        PointRender.GeneratePrefabParticlePoints(pointList, MagnetList, PointHolder, PointPrefab);
+        PointRender.GenerateMagnets(MagnetList, MagnetHolder, MagnetPrefab, PointHolder);
+        PointRender.SetScatterPlotAxis(InputCSVFilename, 
+                                       MagnetList[XAxisDropDown.value], 
+                                       MagnetList[YAxisDropDown.value], 
+                                       MagnetList[ZAxisDropDown.value], 
+                                       PointHolder.transform);
+        PointRender.PlacePrefabParticlePoints(PointHolder.transform);
+        PointRender.PlaceMagnets(MagnetHolder.transform);
 
     }
     /// <summary>

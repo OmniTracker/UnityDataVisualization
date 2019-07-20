@@ -763,7 +763,7 @@ MonoBehaviour:
   RestartScene: {fileID: 0}
   MagnetDataMenu: {fileID: 0}
   PointDataMenu: {fileID: 0}
-  m_InputCSVFilename: airquality
+  InputCSVFilename: airquality
 --- !u!1 &84279829
 GameObject:
   m_ObjectHideFlags: 0
