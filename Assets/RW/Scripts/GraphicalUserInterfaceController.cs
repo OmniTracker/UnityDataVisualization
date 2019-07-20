@@ -29,9 +29,12 @@ using UnityEngine;
 
 public class GraphicalUserInterfaceController : MonoBehaviour
 {
-    // The prefab for the data Magnet that will be instantiated
+    // The prefab for the Point Data and Magnets
     public GameObject MagnetHolder;
+    public GameObject MagnetPrefab;
     public GameObject PointHolder;
+    public GameObject PointPrefab;
+
     // Public Dropdown menus
     public Dropdown XAxisDropDown;
     public Dropdown YAxisDropDown;
@@ -41,35 +44,62 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     public Dropdown DynamicPointRenderingDropDown;
     public Dropdown ColorCorrelationDropDown;
     public Dropdown ColorCorrelationAboveOrBelowMidPointDropDown;
-
     // Public Toggle Objects
     public Toggle MagnetActiveToggle;
     public Toggle MagnetVisible;
     public Toggle AllowColorClassifier;
     public Toggle AllowSpringVisibility;
-
     // Allows the user to Show or hide the GUI
     public Toggle EnableGUICanvas;
-
     public Button RevertToPreviousScene;
     public Button RestartScene;
-
     // Public
     public Text MagnetDataMenu;
     public Text PointDataMenu;
-
+    // Set the first data file that needs to be loaded
+    public string m_InputCSVFilename;
     private List<string> m_MagnetList;
-    private string m_CSVFilename;
-
-
+    private bool m_DataFileLoaded = false;
     PointRenderer m_PointRender;
 
+    public bool DataFileLoaded { get => m_DataFileLoaded; set => m_DataFileLoaded = value; }
+    public List<string> MagnetList { get => m_MagnetList; set => m_MagnetList = value; }
 
+    /// <summary>
+    /// 
+    /// </summary>
     private void Start()
     {
-        m_MagnetList = new List<string>();
-        m_PointRender = new PointRenderer(); 
+        m_PointRender = new PointRenderer();
+        MagnetList = new List<string>();
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    private void Update()
+    {
+        if (DataFileLoaded == false)
+        {
+            UpdateDataView();
+            DataFileLoaded = true;
+        }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    private void UpdateDataView()
+    {
+        List<Dictionary<string, object>> pointList = CSVReader.Read(m_InputCSVFilename);
+        MagnetList = new List<string>(pointList[1].Keys);
 
+        // Iterate though the column list to create the individual magnets
+        foreach (string magnet in MagnetList)
+        {
+            Debug.Log(magnet);
+
+        }
+
+
+    }
 }
 

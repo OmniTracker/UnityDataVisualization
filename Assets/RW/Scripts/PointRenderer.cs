@@ -57,6 +57,8 @@ public class PointRenderer : MonoBehaviour
     public Dropdown XCoordinateDropDown;
     public Dropdown YCoordinateDropDown;
     public Dropdown ZCoordinateDropDown;
+
+
     // Name of the input file, no extension
     public string InputFile;
     // Full column names from CSV (as Dictionary Keys)
@@ -77,19 +79,12 @@ public class PointRenderer : MonoBehaviour
     private bool m_renderColorForPoints = true;
 
     /// <summary>
-    /// Start this instance.
-    /// </summary>
-    void Start()
-    {
-        NewPlot(0, 1, 2);
-    }
-    /// <summary>
     /// News the plot.
     /// </summary>
     /// <param name="column1">Column1.</param>
     /// <param name="column2">Column2.</param>
     /// <param name="column3">Column3.</param>
-    private void NewPlot(int column1, int column2, int column3)
+    public void NewPlot(int column1, int column2, int column3)
     {
         //Run CSV Reader
         pointList = CSVReader.Read(InputFile);
