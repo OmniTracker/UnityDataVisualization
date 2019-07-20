@@ -14,7 +14,6 @@
         float alpha = 1.0f;
         m_SetColor = ColorClassifier.NextRandomColor(minFloatColorValue, maxFloatColorValue, alpha);
 
-        Debug.Log(m_SetColor);
         // Set the color for this Game Object
         this.GetComponent<Renderer>().material.color = m_SetColor;
     }
