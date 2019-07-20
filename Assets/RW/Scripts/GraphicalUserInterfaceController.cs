@@ -82,15 +82,16 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         else
         {
             // Check to see if the Axis have changed.
-
-
+            if ((PointRender.XAxis != MagnetList[XAxisDropDown.value]) ||
+                (PointRender.YAxis != MagnetList[YAxisDropDown.value]) ||
+                (PointRender.ZAxis != MagnetList[ZAxisDropDown.value]) )
+            {
+                UpdateFileDataPlot();
+            }
 
         }
-
         PlotController.OrientLables();
     }
-
-
     private void UpdateFileDataPlot()
     {
         PointRender.SetScatterPlotAxis(InputCSVFilename,
@@ -110,6 +111,9 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         FillDropDowns();
         PointRender.GeneratePrefabParticlePoints(pointList, MagnetList, PointHolder, PointPrefab);
         PointRender.GenerateMagnets(MagnetList, MagnetHolder, MagnetPrefab, PointHolder);
+        XAxisDropDown.value = 1;
+        YAxisDropDown.value = 2;
+        ZAxisDropDown.value = 3;
         PointRender.SetScatterPlotAxis(InputCSVFilename, 
                                        MagnetList[XAxisDropDown.value], 
                                        MagnetList[YAxisDropDown.value], 

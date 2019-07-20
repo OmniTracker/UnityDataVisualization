@@ -144,7 +144,7 @@ public class Raycaster : MonoBehaviour
         }
         else if (gameObject.name.Contains("LoadPlotData"))
         {
-            GameObject.Find("Plotter").GetComponent<PointRenderer>().LoadNewPlotAxis();
+            // GameObject.Find("Plotter").GetComponent<PointRenderer>().LoadNewPlotAxis();
         }
         else if (gameObject.name.Contains("Previous"))
         {
