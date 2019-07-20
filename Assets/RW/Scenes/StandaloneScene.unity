@@ -747,19 +747,18 @@ MonoBehaviour:
   PointHolder: {fileID: 844033628}
   PointPrefab: {fileID: 2453592251030965423, guid: 7f4c65e8c39439c42a1e310cbc578663,
     type: 3}
-  XAxisDropDown: {fileID: 0}
-  YAxisDropDown: {fileID: 0}
-  ZAxisDropDown: {fileID: 0}
-  SelectMagnetDropDown: {fileID: 0}
-  PointColorClassifierDropDown: {fileID: 0}
-  DynamicPointRenderingDropDown: {fileID: 0}
-  ColorCorrelationDropDown: {fileID: 0}
-  ColorCorrelationAboveOrBelowMidPointDropDown: {fileID: 0}
-  MagnetActiveToggle: {fileID: 0}
-  MagnetVisible: {fileID: 0}
-  AllowColorClassifier: {fileID: 0}
-  AllowSpringVisibility: {fileID: 0}
-  EnableGUICanvas: {fileID: 0}
+  XAxisDropDown: {fileID: 646439945}
+  YAxisDropDown: {fileID: 128241464}
+  ZAxisDropDown: {fileID: 206470235}
+  SelectMagnetDropDown: {fileID: 84279831}
+  DynamicPointRenderingDropDown: {fileID: 635499501}
+  ColorCorrelationDropDown: {fileID: 1930494664}
+  ColorCorrelationAboveOrBelowMidPointDropDown: {fileID: 234665844}
+  MagnetActiveToggle: {fileID: 1449871826}
+  MagnetVisible: {fileID: 936703828}
+  AllowColorClassifier: {fileID: 177807429}
+  AllowSpringVisibility: {fileID: 1875576366}
+  EnableGUICanvas: {fileID: 2135683136}
   RevertToPreviousScene: {fileID: 0}
   RestartScene: {fileID: 0}
   MagnetDataMenu: {fileID: 0}
@@ -2222,8 +2221,8 @@ GameObject:
   - component: {fileID: 234665845}
   - component: {fileID: 234665844}
   m_Layer: 5
-  m_Name: Dropdown
-  m_TagString: Untagged
+  m_Name: AboveOrBelowMidPointDropdown
+  m_TagString: StandaloneUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19651,7 +19650,7 @@ GameObject:
   - component: {fileID: 2135683135}
   - component: {fileID: 2135683136}
   m_Layer: 5
-  m_Name: Toggle
+  m_Name: EnableViewToggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

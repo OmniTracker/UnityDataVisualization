@@ -40,7 +40,6 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     public Dropdown YAxisDropDown;
     public Dropdown ZAxisDropDown;
     public Dropdown SelectMagnetDropDown;
-    public Dropdown PointColorClassifierDropDown;
     public Dropdown DynamicPointRenderingDropDown;
     public Dropdown ColorCorrelationDropDown;
     public Dropdown ColorCorrelationAboveOrBelowMidPointDropDown;
@@ -91,15 +90,38 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     {
         List<Dictionary<string, object>> pointList = CSVReader.Read(m_InputCSVFilename);
         MagnetList = new List<string>(pointList[1].Keys);
+        FillDropDowns();
 
+
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    private void FillDropDowns ()
+    {
+        List<string> options = new List<string>();
+        XAxisDropDown.ClearOptions();
+        YAxisDropDown.ClearOptions();
+        ZAxisDropDown.ClearOptions();
+        SelectMagnetDropDown.ClearOptions();
+        DynamicPointRenderingDropDown.ClearOptions();
+        ColorCorrelationDropDown.ClearOptions();
+        ColorCorrelationAboveOrBelowMidPointDropDown.ClearOptions();
         // Iterate though the column list to create the individual magnets
         foreach (string magnet in MagnetList)
         {
-            Debug.Log(magnet);
-
+            options.Add(magnet);
         }
-
-
+        XAxisDropDown.AddOptions(options);
+        YAxisDropDown.AddOptions(options);
+        ZAxisDropDown.AddOptions(options);
+        SelectMagnetDropDown.AddOptions(options);
+        DynamicPointRenderingDropDown.AddOptions(options);
+        ColorCorrelationDropDown.AddOptions(options);
+        options.Clear();
+        options.Add("Above");
+        options.Add("Below");
+        ColorCorrelationAboveOrBelowMidPointDropDown.AddOptions(options);
     }
 }
 
