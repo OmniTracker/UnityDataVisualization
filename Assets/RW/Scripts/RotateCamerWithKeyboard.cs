@@ -73,5 +73,7 @@ public class RotateCamerWithKeyboard : MonoBehaviour
         {
             m_FPSControllerTransform.Rotate(0,-2, 0);
         }
+
+
     }
 }

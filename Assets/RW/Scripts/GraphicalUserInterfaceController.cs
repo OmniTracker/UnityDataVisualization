@@ -33,22 +33,23 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     public GameObject MagnetHolder;
     public GameObject PointHolder;
     // Public Dropdown menus
-    public Dropdown XCoordinateDropDown;
-    public Dropdown YCoordinateDropDown;
-    public Dropdown ZCoordinateDropDown;
-    public Dropdown MagnetNameDropDown;
+    public Dropdown XAxisDropDown;
+    public Dropdown YAxisDropDown;
+    public Dropdown ZAxisDropDown;
+    public Dropdown SelectMagnetDropDown;
     public Dropdown PointColorClassifierDropDown;
+    public Dropdown DynamicPointRenderingDropDown;
+    public Dropdown ColorCorrelationDropDown;
+    public Dropdown ColorCorrelationAboveOrBelowMidPointDropDown;
 
     // Public Toggle Objects
     public Toggle MagnetActiveToggle;
     public Toggle MagnetVisible;
     public Toggle AllowColorClassifier;
     public Toggle AllowSpringVisibility;
-    public Toggle AllowPointSelectionAndMovement;
 
     // Allows the user to Show or hide the GUI
     public Toggle EnableGUICanvas;
-    public Toggle EnablePointSelectionResize;
 
     public Button RevertToPreviousScene;
     public Button RestartScene;
@@ -57,23 +58,17 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     public Text MagnetDataMenu;
     public Text PointDataMenu;
 
-    private List<string> m_magnetList;
+    private List<string> m_MagnetList;
     private string m_CSVFilename;
+
+
+    PointRenderer m_PointRender;
+
 
     private void Start()
     {
-        m_magnetList = new List<string>();
-    }
-
-    public void EnableGUIView ()
-    {
-        if (EnableGUICanvas.isOn == true)
-        {
-
-        }
-
-
-
+        m_MagnetList = new List<string>();
+        m_PointRender = new PointRenderer(); 
     }
 
 }
