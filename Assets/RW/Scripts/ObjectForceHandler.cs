@@ -57,8 +57,8 @@ public class ObjectForceHandler : MonoBehaviour
     void Start()
     {
 
-        InvokeRepeating("UseMagnets", 2.0f, 0.1f);
-        InvokeRepeating("SpringBackToOrigin", 2.0f, 0.1f);
+        InvokeRepeating("UseMagnets", 2.0f, 0.2f);
+        InvokeRepeating("SpringBackToOrigin", 2.0f, 0.2f);
     }
 
     void Awake()

@@ -53,6 +53,7 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     public Text ColorCorrelationMinimumValueTextField;
     public Text ColorCorrelationMaximumValueTextField;
     public InputField ColorCorrelationMidPointInputField;
+    public InputField ParticleMassInputField;
     // Allows the user to Show or hide the GUI
     public Toggle EnableGUICanvas;
     public Button RevertToPreviousScene;
@@ -100,10 +101,11 @@ public class GraphicalUserInterfaceController : MonoBehaviour
             {
                 CheckScatterPlotAttributesUI();
                 // CheckMagnetAttributesUI();
-                CheckParticlePointAttributesUI();
                 CheckDynamicLineRenderingUI();
                 CheckColorCorrelationUI();
             }
+
+            CheckParticlePointAttributesUI();
             GUICanvas.SetActive(EnableGUICanvas.isOn);
         }
         PlotController.OrientLables();
@@ -205,6 +207,16 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         {
             DynamicPointToPointLineRender.UpdateSpringPositions(PointHolder.transform);
         }
+        if (float.TryParse(ParticleMassInputField.text, out float particleMass) == true)
+        {
+            if (PointRendererObject.SetParticleMass != particleMass)
+            {
+                if ((0 <= particleMass) && (particleMass <= 100))
+                {
+                    PointRendererObject.UpdateParticlePointsMass(PointHolder.transform, particleMass);
+                }
+            }
+        }
     }
     /// <summary>
     /// 
@@ -214,7 +226,6 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         if ( EnableLineRender.isOn == true )
         {
             string magnetName = DynamicPointRenderingDropDown.options[DynamicPointRenderingDropDown.value].text;
-
         }
     }
     /// <summary>

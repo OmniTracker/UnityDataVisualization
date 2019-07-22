@@ -49,7 +49,7 @@ public class PointRenderer : MonoBehaviour
     private string m_YAxis;
     private string m_ZAxis;
     // Minimum and maximum values of columns
-    private float m_XMin, m_YMin, m_ZMin, m_XMax, m_YMax, m_ZMax;
+    private float m_XMin, m_YMin, m_ZMin, m_XMax, m_YMax, m_ZMax, m_SetParticleMass;
     // Scale of particlePoints within graph, WARNING: Does not scale with graph frame
     private readonly float plotScale = 10;
     private readonly float pointScale = 0.20f;
@@ -63,6 +63,7 @@ public class PointRenderer : MonoBehaviour
     public float XMax { get => m_XMax; set => m_XMax = value; }
     public float YMax { get => m_YMax; set => m_YMax = value; }
     public float ZMax { get => m_ZMax; set => m_ZMax = value; }
+    public float SetParticleMass { get => m_SetParticleMass; set => m_SetParticleMass = value; }
     /// <summary>
     /// Assign all the label for the scatter plot axis
     /// </summary>
@@ -227,6 +228,19 @@ public class PointRenderer : MonoBehaviour
             childMagnet.GetComponent<MagnetAttributes>().LastPosition = childMagnet.transform.position;
             // Increment to the next point placement index
             index += 1;
+        }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pointHolderTransform"></param>
+    /// <param name="newMass"></param>
+    public void UpdateParticlePointsMass(Transform pointHolderTransform, float newMass)
+    {
+        SetParticleMass = newMass;
+        foreach (Transform childDataPoint in pointHolderTransform)
+        {
+            childDataPoint.GetComponent<Rigidbody>().mass = newMass;
         }
     }
 }
