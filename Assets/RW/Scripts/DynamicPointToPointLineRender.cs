@@ -5,93 +5,65 @@ using UnityEngine;
 
 public class DynamicPointToPointLineRender : MonoBehaviour
 {
-    /// <summary>
-    /// Struct which indicates which Particle points are connected. Struct contains a pointer
-    /// to the linked game object, along with there most up to date stored location. This 
-    /// location is used to signify if the Line needs to be moved if the on of the linked game
-    /// objects coodinates have been moved
-    /// </summary>
-    private struct DataPointLink
-    {
-        GameObject startLink;
-        GameObject endLink;
-        LineRenderer lineRenderer; 
-    }
-    // Object which will contain instantiated prefabs in hiearchy
-    public GameObject PointHolder;
-    // Linked list which holds all the Particle data points which are connected.
-    private List<DataPointLink> m_DataPointLinkedList;
-    private List<DataPointLink> DataPointLinkedList { get => m_DataPointLinkedList; set => m_DataPointLinkedList = value; }
-    // If the Point Linked List has not been updated, there isn't a reason to constuct a new list.
-    private bool m_DataPointLinkedListUpdated = false;
-    public bool DataPointLinkedListUpdated { get => m_DataPointLinkedListUpdated; set => m_DataPointLinkedListUpdated = value; }
+    Transform PointHolderTransform;
 
-    LineRenderer m_LineRenderer;
-
-    /// <summary>
-    /// Instantiate empty List for Data Point Links
-    /// </summary>
-    void Start()
-    {
-        DataPointLinkedList = new List<DataPointLink>();
-        m_LineRenderer = GetComponent<LineRenderer>();
-
-        DataPointLinkedListUpdated = true;
-    }
-    /// <summary>
-    /// Update check if the Data Point Linked List has been updated. If the list has been updated, then all prexisting
-    /// links should be deleted, and new lines needs to be redrawn. The update function will also check whether or not
-    /// the start and end points of the links have been updated. If there is an update in either of the coordinate 
-    /// points, the link needs to be altered to maintain the visual link.
-    /// </summary>
-    void Update()
-    {
-
-        if ( DataPointLinkedListUpdated == false || m_LineRenderer.positionCount != PointHolder.transform.childCount)
-        {
-            // Do further calcs in this section. For now, we will only call the
-            // GenerateLinksOfPointBasedOnAscendingOrder();
-            GenerateLinksBetweenParticleAndOrigin();
-            DataPointLinkedListUpdated = false;
-        }
-    }
+    bool m_springEnabled = true;
+    public bool SpringEnabled { get => m_springEnabled; set => m_springEnabled = value; }
     /// <summary>
     /// 
     /// </summary>
     private void GenerateLinksOfPointBasedOnAscendingOrder()
     {
-        int index = 0;
-        m_LineRenderer.positionCount = PointHolder.transform.childCount; 
-        foreach (Transform childDataPoint in PointHolder.transform)
+
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pointHolderTransform"></param>
+    public static void UpdateSpringPositions(Transform pointHolderTransform)
+    {
+        foreach (Transform childDataPoint in pointHolderTransform)
         {
-            m_LineRenderer.SetPosition(index,childDataPoint.transform.position);
-            index++;
+            LineRenderer lineRenderer = childDataPoint.GetComponent<LineRenderer>();
+            lineRenderer.SetPosition(0, childDataPoint.GetComponent<ParticleAttributes>().OriginLocation);
+            lineRenderer.SetPosition(1, childDataPoint.transform.position);
         }
     }
     /// <summary>
     /// 
     /// </summary>
-    private void GenerateLinksBetweenParticleAndOrigin()
+    /// <param name="pointHolderTransform"></param>
+    public static void GenerateLinksBetweenParticleAndOrigin(Transform pointHolderTransform)
     {
         int positionCount = 2;
         int originIndex = 0;
         int particleIndex = 1;
         float startWidth = 0.002f;
         float endWidth = 0.02f;
-        Color color1 = Color.green;
-        Color color2 = Color.red;
-        foreach (Transform childDataPoint in PointHolder.transform)
+        foreach (Transform childDataPoint in pointHolderTransform)
         {
             LineRenderer lineRenderer = childDataPoint.GetComponent<LineRenderer>();
+            lineRenderer.positionCount = positionCount;
             // Set the start and end widths for the spring
             lineRenderer.startWidth = startWidth;
             lineRenderer.endWidth = endWidth;
             // Set the start and end colors of the spring
-            lineRenderer.startColor = color1;
-            lineRenderer.endColor = color2;
-            lineRenderer.positionCount = positionCount;
+            lineRenderer.startColor = Color.green;
+            lineRenderer.endColor = Color.red;
             lineRenderer.SetPosition(originIndex, childDataPoint.GetComponent<ParticleAttributes>().OriginLocation);
             lineRenderer.SetPosition(particleIndex, childDataPoint.transform.position);
+        }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pointHolderTransform"></param>
+    /// <param name="isEnable"></param>
+    public static void EnableLinksBetweenParticleAndOrigin(Transform pointHolderTransform, bool isEnable)
+    {
+        foreach (Transform childDataPoint in pointHolderTransform)
+        {
+            childDataPoint.GetComponent<LineRenderer>().enabled = isEnable; 
         }
     }
 }

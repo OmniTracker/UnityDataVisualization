@@ -48,6 +48,8 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     public Toggle MagnetVisible;
     public Toggle AllowColorClassifier;
     public Toggle AllowSpringVisibility;
+    bool m_AllowSpringVisibilityFlag = false; 
+    public Toggle EnableLineRender;
     public Text ColorCorrelationMinimumValueTextField;
     public Text ColorCorrelationMaximumValueTextField;
     public InputField ColorCorrelationMidPointInputField;
@@ -68,13 +70,14 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     public List<string> MagnetList { get => m_MagnetList; set => m_MagnetList = value; }
     public PointRenderer PointRendererObject { get => m_PointRender; set => m_PointRender = value; }
     public ColorClassifier ColorClassifierObject { get => colorClassifierObject; set => colorClassifierObject = value; }
+
     GameObject GUICanvas;
-    
     /// <summary>
     /// 
     /// </summary>
     private void Start()
     {
+        EnableLineRender.isOn = false; 
         ColorClassifierObject = new ColorClassifier();
         PointRendererObject = new PointRenderer();
         MagnetList = new List<string>();
@@ -149,6 +152,8 @@ public class GraphicalUserInterfaceController : MonoBehaviour
                                        PointHolder.transform);
         PointRendererObject.PlacePrefabParticlePoints(PointHolder.transform, ColorClassifierObject.Active);
         PointRendererObject.PlaceMagnets(MagnetHolder.transform);
+        // Generate Springs Between Particles and origin 
+        DynamicPointToPointLineRender.GenerateLinksBetweenParticleAndOrigin(PointHolder.transform); 
     }
     /// <summary>
     /// 
@@ -156,7 +161,7 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     private void CheckMagnetAttributesUI ()
     {
         GameObject magnetObject = GameObject.Find(SelectMagnetDropDown.options[SelectMagnetDropDown.value].text); 
-        MagnetAttributes attributes = magnetObject.GetComponent<MagnetAttributes>();
+        MagnetAttributes attributes = magnetObject.transform.GetComponent<MagnetAttributes>();
         // Check if the Magnet Dropdown has changed
         if (attributes.name != m_PreviouslySelectedMagnet)
         {
@@ -191,14 +196,26 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     /// </summary>
     private void CheckParticlePointAttributesUI ()
     {
-
+        if( AllowSpringVisibility.isOn != m_AllowSpringVisibilityFlag)
+        {
+            m_AllowSpringVisibilityFlag = AllowSpringVisibility.isOn;
+            DynamicPointToPointLineRender.EnableLinksBetweenParticleAndOrigin(PointHolder.transform, m_AllowSpringVisibilityFlag); 
+        }
+        if (m_AllowSpringVisibilityFlag)
+        {
+            DynamicPointToPointLineRender.UpdateSpringPositions(PointHolder.transform);
+        }
     }
     /// <summary>
     /// 
     /// </summary>
     private void CheckDynamicLineRenderingUI ()
     {
+        if ( EnableLineRender.isOn == true )
+        {
+            string magnetName = DynamicPointRenderingDropDown.options[DynamicPointRenderingDropDown.value].text;
 
+        }
     }
     /// <summary>
     /// 
@@ -215,10 +232,9 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         }
         if (ColorClassifierObject.Active == true)
         {
-            float cutOffValue;
             float minValue = magnetAttributes.MinValue;
             float maxvalue = magnetAttributes.MaxValue;
-            if ( ( float.TryParse(ColorCorrelationMidPointInputField.text, out cutOffValue) == true) &&
+            if ( ( float.TryParse(ColorCorrelationMidPointInputField.text, out float cutOffValue) == true) &&
                  ( minValue <= cutOffValue )  && 
                  ( cutOffValue <= maxvalue ) )
             {

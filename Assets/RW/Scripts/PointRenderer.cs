@@ -158,6 +158,9 @@ public class PointRenderer : MonoBehaviour
             z = (childDataPoint.GetComponent<ParticleAttributes>().KeyValue(ZAxis) - ZMin) / (ZMax - ZMin);
             childDataPoint.localPosition = new Vector3(x, y, z) * plotScale;
             childDataPoint.localScale = new Vector3(pointScale, pointScale, pointScale);
+
+            childDataPoint.GetComponent<ParticleAttributes>().OriginLocation = childDataPoint.position; 
+
             // Sets color according to x/y/z value
             if (colorClassifierActive == false)
             {
@@ -210,7 +213,7 @@ public class PointRenderer : MonoBehaviour
         float index = 0;
         float maxAngle = 360;
         float angle = (maxAngle / magnetHolderTransform.childCount);
-        float magnetRadius = 12;
+        float magnetRadius = 12.0f;
         foreach (Transform childMagnet in magnetHolderTransform)
         {
             // Calculates the x coordinate based of the predetermined angle, index, and specified magnet radius
