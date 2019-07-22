@@ -68,6 +68,8 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     public List<string> MagnetList { get => m_MagnetList; set => m_MagnetList = value; }
     public PointRenderer PointRendererObject { get => m_PointRender; set => m_PointRender = value; }
     public ColorClassifier ColorClassifierObject { get => colorClassifierObject; set => colorClassifierObject = value; }
+    GameObject GUICanvas;
+    
     /// <summary>
     /// 
     /// </summary>
@@ -77,6 +79,7 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         PointRendererObject = new PointRenderer();
         MagnetList = new List<string>();
         AllowColorClassifier.isOn = ColorClassifierObject.Active;
+        GUICanvas = GameObject.Find("MainContolPanel"); 
     }
     /// <summary>
     /// 
@@ -90,20 +93,16 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         }
         else
         {
-            CheckScatterPlotAttributesUI();
-            // CheckMagnetAttributesUI();
-            CheckParticlePointAttributesUI();
-            CheckDynamicLineRenderingUI();
-            CheckColorCorrelationUI();
+            if (GUICanvas.activeInHierarchy)
+            {
+                CheckScatterPlotAttributesUI();
+                // CheckMagnetAttributesUI();
+                CheckParticlePointAttributesUI();
+                CheckDynamicLineRenderingUI();
+                CheckColorCorrelationUI();
+            }
+            GUICanvas.SetActive(EnableGUICanvas.isOn);
         }
-
-        if (EnableGUICanvas.isOn)
-        {
-
-        }
-
-
-
         PlotController.OrientLables();
     }
     /// <summary>
