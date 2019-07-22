@@ -763,6 +763,7 @@ MonoBehaviour:
   ColorCorrelationMinimumValueTextField: {fileID: 779724524}
   ColorCorrelationMaximumValueTextField: {fileID: 338394070}
   ColorCorrelationMidPointInputField: {fileID: 1752403463}
+  ParticleMassInputField: {fileID: 1881950712}
   EnableGUICanvas: {fileID: 2135683136}
   RevertToPreviousScene: {fileID: 0}
   RestartScene: {fileID: 0}
@@ -12710,8 +12711,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -36, y: 0}
-  m_SizeDelta: {x: 160, y: 20}
+  m_AnchoredPosition: {x: -50.5, y: 0}
+  m_SizeDelta: {x: 110, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1875576366
 MonoBehaviour:
@@ -12775,7 +12776,7 @@ GameObject:
   - component: {fileID: 1881950713}
   - component: {fileID: 1881950712}
   m_Layer: 5
-  m_Name: InputField
+  m_Name: ParticleMassInputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
