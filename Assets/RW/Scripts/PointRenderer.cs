@@ -90,7 +90,7 @@ public class PointRenderer : MonoBehaviour
     /// <summary>
     /// Alter Prefab Particle Points to new plotted position.
     /// </summary>
-    public void AlterPrefabParticlePoints(Transform pointHolderTransform)
+    public void AlterPrefabParticlePoints(Transform pointHolderTransform, bool colorClassifierActive)
     {
         // These values are up updated corresponding to the location
         float x, y, z;
@@ -103,8 +103,10 @@ public class PointRenderer : MonoBehaviour
             childDataPoint.localScale = new Vector3(pointScale, pointScale, pointScale);
             childDataPoint.GetComponent<ParticleAttributes>().OriginLocation = (new Vector3(x, y, z) * plotScale) + childDataPoint.transform.parent.localPosition;
             // Sets color according to x/y/z value
-            childDataPoint.GetComponent<Renderer>().material.color = new Color(x, y, z, 1.0f);
-            
+            if (colorClassifierActive == false)
+            {
+                childDataPoint.GetComponent<Renderer>().material.color = new Color(x, y, z, 1.0f);
+            }
         }
     }
     /// <summary>
@@ -144,7 +146,7 @@ public class PointRenderer : MonoBehaviour
     /// 
     /// </summary>
     /// <param name="pointHolderTransform"></param>
-	public void PlacePrefabParticlePoints(Transform pointHolderTransform)
+	public void PlacePrefabParticlePoints(Transform pointHolderTransform, bool colorClassifierActive)
     {
         float x, y, z;
         // Iterate and alter the positions of each of the particles stored in the point holder.
@@ -157,7 +159,10 @@ public class PointRenderer : MonoBehaviour
             childDataPoint.localPosition = new Vector3(x, y, z) * plotScale;
             childDataPoint.localScale = new Vector3(pointScale, pointScale, pointScale);
             // Sets color according to x/y/z value
-            childDataPoint.GetComponent<Renderer>().material.color = new Color(x, y, z, 1.0f);
+            if (colorClassifierActive == false)
+            {
+                childDataPoint.GetComponent<Renderer>().material.color = new Color(x, y, z, 1.0f);
+            }
         }
     }
     /// <summary>

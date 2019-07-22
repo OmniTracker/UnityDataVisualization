@@ -759,6 +759,9 @@ MonoBehaviour:
   MagnetVisible: {fileID: 936703828}
   AllowColorClassifier: {fileID: 177807429}
   AllowSpringVisibility: {fileID: 1875576366}
+  ColorCorrelationMinimumValueTextField: {fileID: 779724524}
+  ColorCorrelationMaximumValueTextField: {fileID: 338394070}
+  ColorCorrelationMidPointInputField: {fileID: 1752403463}
   EnableGUICanvas: {fileID: 2135683136}
   RevertToPreviousScene: {fileID: 0}
   RestartScene: {fileID: 0}
@@ -4812,7 +4815,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 300, y: 1.5999756}
+  m_AnchoredPosition: {x: 300, y: 1.6000977}
   m_SizeDelta: {x: -600, y: -42}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &654342862

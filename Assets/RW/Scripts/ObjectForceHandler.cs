@@ -27,7 +27,6 @@ using UnityEngine;
 
 public class ObjectForceHandler : MonoBehaviour
 {
-
     Thread ChildThread = null;
     EventWaitHandle ChildThreadWait = new EventWaitHandle(true, EventResetMode.ManualReset);
     EventWaitHandle MainThreadWait = new EventWaitHandle(true, EventResetMode.ManualReset);
@@ -145,8 +144,12 @@ public class ObjectForceHandler : MonoBehaviour
             }
         }
     }
-
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="objectPosition1"></param>
+    /// <param name="objectPosition2"></param>
+    /// <returns></returns>
     private float DistanceBeteenGameObjects (Vector3 objectPosition1, Vector3 objectPosition2)
     {
         return Vector3.Distance(objectPosition1, objectPosition2);

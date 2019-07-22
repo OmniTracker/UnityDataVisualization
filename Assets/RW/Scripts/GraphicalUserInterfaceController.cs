@@ -47,6 +47,9 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     public Toggle MagnetVisible;
     public Toggle AllowColorClassifier;
     public Toggle AllowSpringVisibility;
+    public Text ColorCorrelationMinimumValueTextField;
+    public Text ColorCorrelationMaximumValueTextField;
+    public InputField ColorCorrelationMidPointInputField;
     // Allows the user to Show or hide the GUI
     public Toggle EnableGUICanvas;
     public Button RevertToPreviousScene;
@@ -59,16 +62,20 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     private List<string> m_MagnetList;
     private bool m_NewDataFileLoaded = true;
     PointRenderer m_PointRender;
+    private ColorClassifier colorClassifierObject;
     public bool NewDataFileLoaded { get => m_NewDataFileLoaded; set => m_NewDataFileLoaded = value; }
     public List<string> MagnetList { get => m_MagnetList; set => m_MagnetList = value; }
-    public PointRenderer PointRender { get => m_PointRender; set => m_PointRender = value; }
+    public PointRenderer PointRendererObject { get => m_PointRender; set => m_PointRender = value; }
+    public ColorClassifier ColorClassifierObject { get => colorClassifierObject; set => colorClassifierObject = value; }
     /// <summary>
     /// 
     /// </summary>
     private void Start()
     {
-        PointRender = new PointRenderer();
+        ColorClassifierObject = new ColorClassifier();
+        PointRendererObject = new PointRenderer();
         MagnetList = new List<string>();
+        AllowColorClassifier.isOn = ColorClassifierObject.Active;
     }
     /// <summary>
     /// 
@@ -83,8 +90,10 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         else
         {
             CheckScatterPlotAttributesUI();
-            CheckMagnetAttributesUI();
-
+            // CheckMagnetAttributesUI();
+            CheckParticlePointAttributesUI();
+            CheckDynamicLineRenderingUI();
+            CheckColorCorrelationUI();
         }
         PlotController.OrientLables();
     }
@@ -93,9 +102,9 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     /// </summary>
     private void CheckScatterPlotAttributesUI()
     {
-        if ((PointRender.XAxis != MagnetList[XAxisDropDown.value]) ||
-            (PointRender.YAxis != MagnetList[YAxisDropDown.value]) ||
-            (PointRender.ZAxis != MagnetList[ZAxisDropDown.value]))
+        if ((PointRendererObject.XAxis != MagnetList[XAxisDropDown.value]) ||
+            (PointRendererObject.YAxis != MagnetList[YAxisDropDown.value]) ||
+            (PointRendererObject.ZAxis != MagnetList[ZAxisDropDown.value]))
         {
             UpdateFileDataPlot();
         }
@@ -105,12 +114,12 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     /// </summary>
     private void UpdateFileDataPlot()
     {
-        PointRender.SetScatterPlotAxis(InputCSVFilename,
+        PointRendererObject.SetScatterPlotAxis(InputCSVFilename,
                                        MagnetList[XAxisDropDown.value],
                                        MagnetList[YAxisDropDown.value],
                                        MagnetList[ZAxisDropDown.value],
                                        PointHolder.transform);
-        PointRender.AlterPrefabParticlePoints(PointHolder.transform);
+        PointRendererObject.AlterPrefabParticlePoints(PointHolder.transform, ColorClassifierObject.Active);
     }
     /// <summary>
     /// 
@@ -120,19 +129,18 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         List<Dictionary<string, object>> pointList = CSVReader.Read(InputCSVFilename);
         MagnetList = new List<string>(pointList[1].Keys);
         FillDropDowns();
-        PointRender.GeneratePrefabParticlePoints(pointList, MagnetList, PointHolder, PointPrefab);
-        PointRender.GenerateMagnets(MagnetList, MagnetHolder, MagnetPrefab, PointHolder);
+        PointRendererObject.GeneratePrefabParticlePoints(pointList, MagnetList, PointHolder, PointPrefab);
+        PointRendererObject.GenerateMagnets(MagnetList, MagnetHolder, MagnetPrefab, PointHolder);
         XAxisDropDown.value = 1;
         YAxisDropDown.value = 2;
         ZAxisDropDown.value = 3;
-        PointRender.SetScatterPlotAxis(InputCSVFilename, 
+        PointRendererObject.SetScatterPlotAxis(InputCSVFilename, 
                                        MagnetList[XAxisDropDown.value], 
                                        MagnetList[YAxisDropDown.value], 
                                        MagnetList[ZAxisDropDown.value], 
                                        PointHolder.transform);
-        PointRender.PlacePrefabParticlePoints(PointHolder.transform);
-        PointRender.PlaceMagnets(MagnetHolder.transform);
-
+        PointRendererObject.PlacePrefabParticlePoints(PointHolder.transform, ColorClassifierObject.Active);
+        PointRendererObject.PlaceMagnets(MagnetHolder.transform);
     }
     /// <summary>
     /// 
@@ -168,11 +176,41 @@ public class GraphicalUserInterfaceController : MonoBehaviour
             {
 
             }
-
         }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    private void CheckParticlePointAttributesUI ()
+    {
+
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    private void CheckDynamicLineRenderingUI ()
+    {
+
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    private void CheckColorCorrelationUI()
+    {
+        // Get name of selected option.
+        string magnetName = ColorCorrelationDropDown.options[ColorCorrelationDropDown.value].text;
+        string cutOffOption = ColorCorrelationAboveOrBelowMidPointDropDown.options[ColorCorrelationAboveOrBelowMidPointDropDown.value].text;
+        MagnetAttributes magnetAttributes = MagnetHolder.transform.Find(magnetName).transform.GetComponent<MagnetAttributes>();
+        Color magnetColor = MagnetHolder.transform.Find(magnetName).transform.GetComponent<Renderer>().material.color;
 
 
-          // SelectMagnetDropDown;
+
+
+        ColorCorrelationMinimumValueTextField.text = magnetAttributes.MinValue.ToString(); 
+        ColorCorrelationMaximumValueTextField.text = magnetAttributes.MaxValue.ToString();
+
+
+        Debug.Log(cutOffOption);
 
     }
     /// <summary>

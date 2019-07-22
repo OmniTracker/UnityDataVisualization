@@ -13,6 +13,7 @@
  *      (7/11/2019) - Software Refactor - This file was generated to handle the
  *                    color of the magnets and also the color correlation for 
  *                    each of the data points if the color classifier is enabled
+ *      (7/21/2019) - Adding color alteration based off specified values.              
  *-----------------------------------------------------------------------------
  * This program is free software: you can redistribute it and/or modify it 
  * under the terms of the GNU General Public License as published by the Free 
@@ -30,30 +31,7 @@ using UnityEngine;
 
 public class ColorClassifier : MonoBehaviour
 {
-    public bool changeColor = false;
-    [Range(0.0f, 1.0f)]
-    public float x, y, z;
-    // Object which will contain instantiated prefabs in hiearchy
-    public GameObject PointHolder;
-    // Object which will contain instantiated prefabs in hiearchy
-    public GameObject MagnetHolder;
-    private int m_MagnetHolderCount = 0;
-    // List of known colors we will use to color the magnet.
-    private List<Color> colorList;
-
-    /// <summary>
-    /// Upon starting, all the color we will use to color all the magnets will be 
-    /// set in this function.
-    /// </summary>
-    private void Start()
-    {
-        // Set all the known color we will use.
-        colorList = new List<Color>();
-
-
-
-    }
-
+    public bool Active = false;
     /// <summary>
     /// Used to generate a random color based of the min and max values
     /// </summary>
@@ -83,22 +61,14 @@ public class ColorClassifier : MonoBehaviour
         return new Color(r,g,b, 1.0f); 
     }
 
-
-    void Update()
+    public static void AlterScatterPlotColorsBasedOnInput(Transform pointHolderTransform, Color targetColor, string magnetName, float cutOff)
     {
-
-
-        if (changeColor == true)
+        foreach (Transform childDataPoint in pointHolderTransform)
         {
-            Color col = new Color(x, y, z, 1.0f);
 
-            // Iterate and alter the positions of each of the particles stored in the point holder.
-            foreach (Transform childDataPoint in PointHolder.transform)
-            {
-                childDataPoint.GetComponent<Renderer>().material.color = col;
-            }
+
+
 
         }
-
     }
 }
