@@ -25,6 +25,7 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using System.Globalization;
 
 public class GraphicalUserInterfaceController : MonoBehaviour
 {
@@ -95,6 +96,14 @@ public class GraphicalUserInterfaceController : MonoBehaviour
             CheckDynamicLineRenderingUI();
             CheckColorCorrelationUI();
         }
+
+        if (EnableGUICanvas.isOn)
+        {
+
+        }
+
+
+
         PlotController.OrientLables();
     }
     /// <summary>
@@ -197,21 +206,33 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     /// </summary>
     private void CheckColorCorrelationUI()
     {
-        // Get name of selected option.
+        ColorClassifierObject.Active = AllowColorClassifier.isOn;
         string magnetName = ColorCorrelationDropDown.options[ColorCorrelationDropDown.value].text;
-        string cutOffOption = ColorCorrelationAboveOrBelowMidPointDropDown.options[ColorCorrelationAboveOrBelowMidPointDropDown.value].text;
         MagnetAttributes magnetAttributes = MagnetHolder.transform.Find(magnetName).transform.GetComponent<MagnetAttributes>();
-        Color magnetColor = MagnetHolder.transform.Find(magnetName).transform.GetComponent<Renderer>().material.color;
-
-
-
-
-        ColorCorrelationMinimumValueTextField.text = magnetAttributes.MinValue.ToString(); 
-        ColorCorrelationMaximumValueTextField.text = magnetAttributes.MaxValue.ToString();
-
-
-        Debug.Log(cutOffOption);
-
+        if (ColorClassifierObject.PreviousMagnet != magnetName)
+        {
+            ColorCorrelationMinimumValueTextField.text = magnetAttributes.MinValue.ToString();
+            ColorCorrelationMaximumValueTextField.text = magnetAttributes.MaxValue.ToString();
+        }
+        if (ColorClassifierObject.Active == true)
+        {
+            float cutOffValue;
+            float minValue = magnetAttributes.MinValue;
+            float maxvalue = magnetAttributes.MaxValue;
+            if ( ( float.TryParse(ColorCorrelationMidPointInputField.text, out cutOffValue) == true) &&
+                 ( minValue <= cutOffValue )  && 
+                 ( cutOffValue <= maxvalue ) )
+            {
+                string cutOffOption = ColorCorrelationAboveOrBelowMidPointDropDown.options[ColorCorrelationAboveOrBelowMidPointDropDown.value].text;
+                if (ColorClassifierObject.PreviousCutOffOption != cutOffOption ||
+                     ColorClassifierObject.PreviousValue != cutOffValue ||
+                     ColorClassifierObject.PreviousMagnet != magnetName)
+                {
+                    Color magnetColor = MagnetHolder.transform.Find(magnetName).transform.GetComponent<Renderer>().material.color;
+                    ColorClassifierObject.AlterScatterPlotColorsBasedOnInput(PointHolder.transform, magnetColor, magnetName, cutOffOption, cutOffValue);
+                }
+            }
+        }
     }
     /// <summary>
     /// 

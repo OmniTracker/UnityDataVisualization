@@ -25,13 +25,18 @@
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ColorClassifier : MonoBehaviour
 {
     public bool Active = false;
+    private string m_PreviousMagnet = "";
+    private float m_PreviousValue = float.NaN;
+    private string m_PreviousCutOffOption = "";
+    public string PreviousMagnet { get => m_PreviousMagnet; set => m_PreviousMagnet = value; }
+    public float PreviousValue { get => m_PreviousValue; set => m_PreviousValue = value; }
+    public string PreviousCutOffOption { get => m_PreviousCutOffOption; set => m_PreviousCutOffOption = value; }
+
     /// <summary>
     /// Used to generate a random color based of the min and max values
     /// </summary>
@@ -60,15 +65,58 @@ public class ColorClassifier : MonoBehaviour
         float b = Random.Range(minimum, maximum);
         return new Color(r,g,b, 1.0f); 
     }
-
-    public static void AlterScatterPlotColorsBasedOnInput(Transform pointHolderTransform, Color targetColor, string magnetName, float cutOff)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pointHolderTransform"></param>
+    /// <param name="targetColor"></param>
+    /// <param name="magnetName"></param>
+    /// <param name="direction"></param>
+    /// <param name="cutOff"></param>
+    public void AlterScatterPlotColorsBasedOnInput(Transform pointHolderTransform, 
+                                                          Color targetColor, 
+                                                          string magnetName, 
+                                                          string direction,
+                                                          float cutOff)
     {
+        bool alterationsHadSomeEffect = false;
         foreach (Transform childDataPoint in pointHolderTransform)
         {
-
-
-
-
+            // Get value based on magnet name passed in.
+            float value = childDataPoint.GetComponent<ParticleAttributes>().KeyValue(magnetName);
+            if (direction == "Above")
+            {
+                if (value >= cutOff)
+                {
+                    childDataPoint.GetComponent<Renderer>().material.color = targetColor;
+                    alterationsHadSomeEffect = true;
+                }
+                else
+                {
+                    childDataPoint.GetComponent<Renderer>().material.color = Color.white;
+                }
+            }
+            else if (direction == "Below")
+            {
+                if (value <= cutOff)
+                {
+                    childDataPoint.GetComponent<Renderer>().material.color = targetColor;
+                    alterationsHadSomeEffect = true;
+                }
+                else
+                {
+                    childDataPoint.GetComponent<Renderer>().material.color = Color.white;
+                }
+            }
+        }
+        // If any of the particles color changed, store the values for later. 
+        // There needs to be a way of knowing when an alteration has occurred so we don't 
+        // continuous make alterations the scene.
+        if (alterationsHadSomeEffect == true)
+        {
+            PreviousMagnet = magnetName;
+            PreviousValue = cutOff;
+            PreviousCutOffOption = direction;
         }
     }
 }
