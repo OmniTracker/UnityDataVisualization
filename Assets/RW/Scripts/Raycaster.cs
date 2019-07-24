@@ -41,6 +41,7 @@ public class Raycaster : MonoBehaviour
     void Start()
     {
         InvokeRepeating("UpdateRaycaster", 2.0f, 0.2f);
+        InvokeRepeating("UpdateRaycasterForPointDataAndMagnets", 2.0f, 0.05f);
     }
     private void UpdateRaycaster()
     {
@@ -56,25 +57,43 @@ public class Raycaster : MonoBehaviour
                 {
                     InteractWithGUI(gameObject);
                 }
-                else if (gameObject.tag.Contains("Magnet"))
-                {
-
-                }
-                else if (gameObject.tag.Contains("DataPoint"))
-                {
-                    InteractWithPointData(gameObject); 
-                }
             }  
         }
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    private void UpdateRaycasterForPointDataAndMagnets()
+    {
+        RaycastHit raycastHit;
+        GameObject gameObject = null;
+        if (SteamVR_Actions._default.Squeeze.GetAxis(LeftInputSource) == 1 || SteamVR_Actions._default.Squeeze.GetAxis(RightInputSource) == 1)
+        {
+            if (Physics.Raycast(transform.position, transform.forward, out raycastHit))
+            {
+                gameObject = raycastHit.collider.gameObject;
 
+                if (gameObject.tag.Contains("Magnet"))
+                {
+                    InteractWithMagnet(gameObject, raycastHit);
+                }
+                else if (gameObject.tag.Contains("DataPoint"))
+                {
+                    InteractWithPointData(gameObject);
+                }
+            }
+        }
+    }
     /// <summary>
     /// 
     /// </summary>
     /// <param name="gameObject"></param>
-    private void InteractWithMagnet(GameObject gameObject)
+    /// <param name="raycastHit"></param>
+    private void InteractWithMagnet(GameObject gameObject, RaycastHit raycastHit)
     {
-        gameObject.transform.position = transform.position;
+        Vector3 newPosition = new Vector3(gameObject.transform.position.x, raycastHit.point.y, gameObject.transform.position.z);
+
+        gameObject.transform.position = newPosition; 
     }
     /// <summary>
     /// 
@@ -122,9 +141,9 @@ public class Raycaster : MonoBehaviour
             {
                 toggle.isOn = true;
             }
-
         }
     }
+
     /*
      * Code that I may use later. Removed
 if (MagnetHolder.transform.childCount != 0 && PointHolder.transform.childCount != 0)

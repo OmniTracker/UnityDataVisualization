@@ -6605,7 +6605,7 @@ GameObject:
   - component: {fileID: 870738237}
   - component: {fileID: 870738236}
   m_Layer: 5
-  m_Name: AboveOrBelowMidPointDropdown
+  m_Name: AboveOrBelowMidPointDropDown
   m_TagString: RaycasterUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7929,19 +7929,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LeftInputSource: 1
   RightInputSource: 2
-  MagnetHolder: {fileID: 2119610079}
-  PointHolder: {fileID: 844033628}
-  XCoordinateDropDown: {fileID: 0}
-  YCoordinateDropDown: {fileID: 0}
-  ZCoordinateDropDown: {fileID: 0}
-  MagnetNameDropDown: {fileID: 0}
-  MagnetStrengthTextValue: {fileID: 0}
-  SpringStrengthTextValue: {fileID: 0}
-  MagnetDataMenu: {fileID: 0}
-  PointDataMenu: {fileID: 0}
-  MagnetActiveToggle: {fileID: 0}
-  AllowMagnetismToggle: {fileID: 0}
-  AllowSpringToggle: {fileID: 0}
 --- !u!114 &1089825117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9456,19 +9443,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LeftInputSource: 1
   RightInputSource: 2
-  MagnetHolder: {fileID: 2119610079}
-  PointHolder: {fileID: 844033628}
-  XCoordinateDropDown: {fileID: 0}
-  YCoordinateDropDown: {fileID: 0}
-  ZCoordinateDropDown: {fileID: 0}
-  MagnetNameDropDown: {fileID: 0}
-  MagnetStrengthTextValue: {fileID: 0}
-  SpringStrengthTextValue: {fileID: 0}
-  MagnetDataMenu: {fileID: 0}
-  PointDataMenu: {fileID: 0}
-  MagnetActiveToggle: {fileID: 0}
-  AllowMagnetismToggle: {fileID: 0}
-  AllowSpringToggle: {fileID: 0}
 --- !u!114 &1351410455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13223,7 +13197,6 @@ GameObject:
   - component: {fileID: 1908091041}
   - component: {fileID: 1908091040}
   - component: {fileID: 1908091039}
-  - component: {fileID: 1908091038}
   - component: {fileID: 1908091037}
   - component: {fileID: 1908091036}
   - component: {fileID: 1908091035}
@@ -13384,18 +13357,6 @@ MonoBehaviour:
   MagnetDataMenu: {fileID: 0}
   PointDataMenu: {fileID: 0}
   InputCSVFilename: airquality
---- !u!114 &1908091038
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1908091034}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6aa8b56771fc2964f8057b2966da1dd6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1908091039
 MonoBehaviour:
   m_ObjectHideFlags: 0

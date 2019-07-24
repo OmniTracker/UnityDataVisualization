@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 366035480062734703}
   - component: {fileID: 7337100730768319386}
   - component: {fileID: 1467311821534684414}
-  - component: {fileID: 2926260708345984166}
   - component: {fileID: 7246462892508053457}
   - component: {fileID: 7193344779606152411}
+  - component: {fileID: 7740442568655149224}
   m_Layer: 0
   m_Name: Magnet
   m_TagString: Magnet
@@ -81,19 +81,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &2926260708345984166
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 981932007337732189}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7246462892508053457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,6 +109,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!136 &7740442568655149224
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981932007337732189}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6368407449802519014
 GameObject:
   m_ObjectHideFlags: 0
