@@ -115,6 +115,9 @@ public class ObjectForceHandler : MonoBehaviour
                     float dataPointValue = childDataPoint.GetComponent<ParticleAttributes>().KeyValue(childMagnet.name);
                     if (childMagnet.GetComponent<MagnetAttributes>().MagnetVisible)
                     {
+                        Debug.Log(direction *
+                        childMagnet.GetComponent<MagnetAttributes>().CalculateAttractionForce(dataPointValue));
+
                         childDataPoint.GetComponent<Rigidbody>().AddForce(direction *
                         childMagnet.GetComponent<MagnetAttributes>().CalculateAttractionForce(dataPointValue));
                     }

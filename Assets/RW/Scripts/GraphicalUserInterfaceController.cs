@@ -53,6 +53,7 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     public Text ColorCorrelationMinimumValueTextField;
     public Text ColorCorrelationMaximumValueTextField;
     public InputField ColorCorrelationMidPointInputField;
+    public InputField MagnetStrengthPercentInputField;
     public InputField ParticleMassInputField;
     // Allows the user to Show or hide the GUI
     public Toggle EnableGUICanvas;
@@ -63,6 +64,8 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     public Text PointDataMenu;
     // Set the first data file that needs to be loaded
     public string InputCSVFilename;
+    private string m_DynamicPointRenderingMagnetName = "";
+    private LineRenderer m_DynamicLineRenderer;
     private List<string> m_MagnetList;
     private bool m_NewDataFileLoaded = true;
     PointRenderer m_PointRender;
@@ -71,6 +74,7 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     public List<string> MagnetList { get => m_MagnetList; set => m_MagnetList = value; }
     public PointRenderer PointRendererObject { get => m_PointRender; set => m_PointRender = value; }
     public ColorClassifier ColorClassifierObject { get => colorClassifierObject; set => colorClassifierObject = value; }
+    public LineRenderer DynamicLineRenderer { get => m_DynamicLineRenderer; set => m_DynamicLineRenderer = value; }
 
     GameObject GUICanvas;
     /// <summary>
@@ -83,6 +87,8 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         PointRendererObject = new PointRenderer();
         MagnetList = new List<string>();
         AllowColorClassifier.isOn = ColorClassifierObject.Active;
+        DynamicLineRenderer = GetComponent<LineRenderer>();
+        DynamicLineRenderer.material = new Material(Shader.Find("Sprites/Default"));
         GUICanvas = GameObject.Find("MainContolPanel"); 
     }
     /// <summary>
@@ -100,7 +106,7 @@ public class GraphicalUserInterfaceController : MonoBehaviour
             if (GUICanvas.activeInHierarchy)
             {
                 CheckScatterPlotAttributesUI();
-                // CheckMagnetAttributesUI();
+                CheckMagnetAttributesUI();
                 CheckDynamicLineRenderingUI();
                 CheckColorCorrelationUI();
             }
@@ -162,34 +168,34 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     /// </summary>
     private void CheckMagnetAttributesUI ()
     {
-        GameObject magnetObject = GameObject.Find(SelectMagnetDropDown.options[SelectMagnetDropDown.value].text); 
-        MagnetAttributes attributes = magnetObject.transform.GetComponent<MagnetAttributes>();
-        // Check if the Magnet Dropdown has changed
-        if (attributes.name != m_PreviouslySelectedMagnet)
+        string magnetName = SelectMagnetDropDown.options[SelectMagnetDropDown.value].text;
+        MagnetAttributes magnetAttributes = MagnetHolder.transform.Find(magnetName).transform.GetComponent<MagnetAttributes>();
+        if (magnetAttributes.name != m_PreviouslySelectedMagnet)
         {
-            MagnetActiveToggle.isOn = attributes.MagnetActive;
-            MagnetVisible.isOn = attributes.MagnetVisible;
-            if (MagnetVisible.isOn == false)
-            {
-                magnetObject.SetActive(false);
-            }
-            else
-            {
-                magnetObject.SetActive(true);
-            }
-            m_PreviouslySelectedMagnet = attributes.name;
+            MagnetActiveToggle.isOn = magnetAttributes.MagnetActive;
+            MagnetVisible.isOn = magnetAttributes.MagnetVisible;
+ 
+            m_PreviouslySelectedMagnet = magnetAttributes.name;
         }
         else
         {
-            // Set
-            if (MagnetActiveToggle.isOn != attributes.MagnetActive)
+            if (magnetAttributes.MagnetActive != MagnetActiveToggle.isOn)
             {
-                attributes.MagnetActive = MagnetActiveToggle.isOn;
+                magnetAttributes.MagnetActive = MagnetActiveToggle.isOn;
             }
-
-            if (MagnetVisible.isOn != attributes.MagnetActive)
+            if (magnetAttributes.MagnetVisible != MagnetVisible.isOn)
             {
-
+                magnetAttributes.MagnetVisible = MagnetVisible.isOn;
+            }
+            bool magnetInScene = MagnetHolder.transform.Find(magnetName).transform.GetComponent<Renderer>().enabled;
+            if (magnetInScene != MagnetVisible.isOn)
+            {
+                MagnetHolder.transform.Find(magnetName).transform.GetComponent<Renderer>().enabled = MagnetVisible.isOn;
+            }
+            if ((float.TryParse(MagnetStrengthPercentInputField.text, out float percentage) == true) &&
+                percentage >= -100.0f &&
+                percentage <= 100.0f)  {
+                magnetAttributes.MagnetismStrength = (percentage / 10.0f);
             }
         }
     }
@@ -223,9 +229,16 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     /// </summary>
     private void CheckDynamicLineRenderingUI ()
     {
-        if ( EnableLineRender.isOn == true )
+        if ( (EnableLineRender.isOn == true))
         {
             string magnetName = DynamicPointRenderingDropDown.options[DynamicPointRenderingDropDown.value].text;
+            DynamicPointToPointLineRender.SortPointsForLineRender(PointHolder.transform, DynamicLineRenderer, magnetName);
+            m_DynamicPointRenderingMagnetName = magnetName;
+            DynamicLineRenderer.enabled = true;
+        }
+        else if ((EnableLineRender.isOn == false))
+        {
+            DynamicLineRenderer.enabled = false;
         }
     }
     /// <summary>
