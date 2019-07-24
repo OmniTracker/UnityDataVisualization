@@ -197,6 +197,10 @@ public class GraphicalUserInterfaceController : MonoBehaviour
                 percentage <= 100.0f)  {
                 magnetAttributes.MagnetismStrength = (percentage / 10.0f);
             }
+            else
+            {
+                MagnetStrengthPercentInputField.text = "";
+            }
         }
     }
     /// <summary>
@@ -213,7 +217,9 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         {
             DynamicPointToPointLineRender.UpdateSpringPositions(PointHolder.transform);
         }
-        if (float.TryParse(ParticleMassInputField.text, out float particleMass) == true)
+        if (float.TryParse(ParticleMassInputField.text, out float particleMass) == true &&
+            particleMass >= 0 &&
+            particleMass <= 100)
         {
             if (PointRendererObject.SetParticleMass != particleMass)
             {
@@ -222,6 +228,10 @@ public class GraphicalUserInterfaceController : MonoBehaviour
                     PointRendererObject.UpdateParticlePointsMass(PointHolder.transform, particleMass);
                 }
             }
+        }
+        else
+        {
+            ParticleMassInputField.text = "";
         }
     }
     /// <summary>
@@ -258,6 +268,7 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         {
             float minValue = magnetAttributes.MinValue;
             float maxvalue = magnetAttributes.MaxValue;
+
             if ( ( float.TryParse(ColorCorrelationMidPointInputField.text, out float cutOffValue) == true) &&
                  ( minValue <= cutOffValue )  && 
                  ( cutOffValue <= maxvalue ) )
@@ -270,6 +281,10 @@ public class GraphicalUserInterfaceController : MonoBehaviour
                     Color magnetColor = MagnetHolder.transform.Find(magnetName).transform.GetComponent<Renderer>().material.color;
                     ColorClassifierObject.AlterScatterPlotColorsBasedOnInput(PointHolder.transform, magnetColor, magnetName, cutOffOption, cutOffValue);
                 }
+            }
+            else
+            {
+                ColorCorrelationMidPointInputField.text = "";
             }
         }
     }
