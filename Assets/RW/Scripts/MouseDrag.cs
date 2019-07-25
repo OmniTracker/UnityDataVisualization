@@ -43,7 +43,7 @@ public class MouseDrag : MonoBehaviour
         DisplayPointData(transform);
     }
     private void DisplayPointData( Transform transform )
-    {
+    {/*
         // If the name of the data point is a number, Then we know we can 
         // add the data to the display.
         if (Regex.IsMatch(transform.name, @"^\d+$")) {
@@ -52,5 +52,7 @@ public class MouseDrag : MonoBehaviour
                 dataString += "\n Attribute: " + data.Key + ", Value: " + data.Value;
             GameObject.Find("DataMenu").GetComponent<Text>().text = dataString;
         }
+
+        */
     }
 }

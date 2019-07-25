@@ -91,11 +91,18 @@ public class Raycaster : MonoBehaviour
     /// <param name="raycastHit"></param>
     private void InteractWithMagnet(GameObject gameObject, RaycastHit raycastHit)
     {
-        Vector3 newPosition = new Vector3(gameObject.transform.position.x, raycastHit.point.y, gameObject.transform.position.z);
-
+        // Get the angle between 
+        float xDiff = raycastHit.point.x - this.transform.position.x;
+        float zDiff = raycastHit.point.z - this.transform.position.z;
+        float angle = Mathf.Atan2(zDiff, xDiff) * (180.0f / Mathf.PI);
+        // Get the distance beween the hand and the center of the Magnet
+        float distance = Vector3.Distance(gameObject.transform.position, this.transform.position);
+        // Use this new values to calculate the new x and z coordinate
+        float newX = distance * Mathf.Cos(angle);
+        float newZ = distance * Mathf.Sin(angle);
+        Vector3 newPosition = new Vector3((this.transform.position.x + newX) , raycastHit.point.y, ( this.transform.position.z + newZ));
         gameObject.transform.position = newPosition; 
-    }
-    /// <summary>
+    }    /// <summary>
     /// 
     /// </summary>
     /// <param name="gameObject"></param>

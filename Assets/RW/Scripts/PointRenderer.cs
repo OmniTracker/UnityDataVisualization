@@ -138,7 +138,7 @@ public class PointRenderer : MonoBehaviour
             // Disable Gravity
             dataPoint.GetComponent<Rigidbody>().useGravity = false;
             // Set the Drag value in the Rigidboby
-            dataPoint.GetComponent<Rigidbody>().drag = 0.5f;
+            dataPoint.GetComponent<Rigidbody>().drag = 0.3f;
             // Make child of PointHolder object, to keep particlePoints within container in hiearchy
             dataPoint.transform.SetParent(pointHolder.transform);
         }
