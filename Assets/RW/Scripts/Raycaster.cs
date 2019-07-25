@@ -35,6 +35,10 @@ public class Raycaster : MonoBehaviour
     public SteamVR_Input_Sources RightInputSource = SteamVR_Input_Sources.RightHand;
 
     string m_lastPointDataName = "";
+    string m_lastMagnetName = "";
+    float m_distanceFromHandAndMagnet = 0;
+    Quaternion m_LastRotation;
+
     /// <summary>
     /// 
     /// </summary>
@@ -91,21 +95,18 @@ public class Raycaster : MonoBehaviour
     /// <param name="raycastHit"></param>
     private void InteractWithMagnet(GameObject gameObject, RaycastHit raycastHit)
     {
-        // Get the angle between 
-        float xDiff = raycastHit.point.x - this.transform.position.x;
-        float zDiff = raycastHit.point.z - this.transform.position.z;
-        float angle = Mathf.Atan2(zDiff, xDiff) * (180.0f / Mathf.PI);
-        // Get the distance beween the hand and the center of the Magnet
-        float distance = Vector3.Distance(gameObject.transform.position, this.transform.position);
-        // Use this new values to calculate the new x and z coordinate
-        float newX = distance * Mathf.Cos(angle);
-        float newZ = distance * Mathf.Sin(angle);
-        Vector3 newPosition = new Vector3((this.transform.position.x + newX) , raycastHit.point.y, ( this.transform.position.z + newZ));
-        gameObject.transform.position = newPosition; 
+        if (m_lastMagnetName != gameObject.name)
+        {
+            m_lastMagnetName = gameObject.name;
+            m_distanceFromHandAndMagnet = Vector3.Distance(gameObject.transform.position, this.transform.position);
+        }
+        // Normalize vector between hand and raycast
+        Vector3 normalizedVector = (raycastHit.point - this.transform.position).normalized;
+        gameObject.transform.position = this.transform.position + ( normalizedVector * m_distanceFromHandAndMagnet);
     }    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="gameObject"></param>
+         /// 
+         /// </summary>
+         /// <param name="gameObject"></param>
     private void InteractWithPointData(GameObject gameObject)
     {
         if (m_lastPointDataName != gameObject.name)
