@@ -845,6 +845,9 @@ MonoBehaviour:
   ColorCorrelationMidPointInputField: {fileID: 1752403463}
   MagnetStrengthPercentInputField: {fileID: 679152828}
   ParticleMassInputField: {fileID: 1881950712}
+  LoadDataButton: {fileID: 0}
+  SelectDataButton: {fileID: 0}
+  FileNameText: {fileID: 0}
   EnableGUICanvas: {fileID: 2135683136}
   RevertToPreviousScene: {fileID: 0}
   RestartScene: {fileID: 0}
@@ -4988,6 +4991,7 @@ RectTransform:
   - {fileID: 1128542226}
   - {fileID: 911251380}
   - {fileID: 513208107}
+  - {fileID: 1767219869}
   m_Father: {fileID: 84107648}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12409,6 +12413,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1752403461}
   m_CullTransparentMesh: 0
+--- !u!1 &1767219868
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1767219869}
+  m_Layer: 0
+  m_Name: LoadDataUI
+  m_TagString: StandaloneUI
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1767219869
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1767219868}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -700, y: -407.35388, z: 0}
+  m_LocalScale: {x: 0.7692308, y: 0.7692308, z: 0.7692308}
+  m_Children: []
+  m_Father: {fileID: 654342861}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1768580213
 GameObject:
   m_ObjectHideFlags: 0
