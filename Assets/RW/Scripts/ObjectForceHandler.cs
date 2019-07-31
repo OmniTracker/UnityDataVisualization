@@ -57,8 +57,8 @@ public class ObjectForceHandler : MonoBehaviour
     void Start()
     {
 
-        InvokeRepeating("UseMagnets", 2.0f, 0.2f);
-        InvokeRepeating("SpringBackToOrigin", 2.0f, 0.2f);
+        InvokeRepeating("UseMagnets", 2.0f, 0.07f);
+        InvokeRepeating("SpringBackToOrigin", 2.0f, 0.1f);
     }
 
     void Awake()
@@ -115,9 +115,6 @@ public class ObjectForceHandler : MonoBehaviour
                     float dataPointValue = childDataPoint.GetComponent<ParticleAttributes>().KeyValue(childMagnet.name);
                     if (childMagnet.GetComponent<MagnetAttributes>().MagnetVisible)
                     {
-                        Debug.Log(direction *
-                        childMagnet.GetComponent<MagnetAttributes>().CalculateAttractionForce(dataPointValue));
-
                         childDataPoint.GetComponent<Rigidbody>().AddForce(direction *
                         childMagnet.GetComponent<MagnetAttributes>().CalculateAttractionForce(dataPointValue));
                     }

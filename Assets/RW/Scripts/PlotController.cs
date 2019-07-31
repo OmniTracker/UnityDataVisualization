@@ -28,6 +28,8 @@
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlotController
@@ -81,31 +83,18 @@ public class PlotController
     /// <param name="DataPointContainerTransform"></param>
     /// <param name="column"></param>
     /// <returns></returns>
-    public static float FindMaximumValueFromDataPointContainer(Transform DataPointContainerTransform, string column)
+    public static float FindMaximumValueFromDataPointContainer(List<Dictionary<string, object>> pointList, string column)
     {
         float maxValue = 0;
-        ParticleAttributes particleAttributes;
-        // If the transform is null, return a value of zero
-        if (DataPointContainerTransform == null)
+        // Store all data from files in data point
+        for (var i = 0; i < pointList.Count; i++)
         {
-            return 0;
-        }
-        // Iterate through all the point to figure out what the Lowest value is based off the input string.
-        foreach (Transform childDataPoint in DataPointContainerTransform)
-        {
-            particleAttributes = childDataPoint.GetComponent<ParticleAttributes>();
-            // If the Transform does not contain a ParticleAttributes component, return a value of zero
-            if (particleAttributes == null)
-            {
-                return 0;
-            }
             // Get the stored key value for the column value passed in
-            if (maxValue < particleAttributes.KeyValue(column))
+            if (maxValue < Convert.ToSingle(pointList[i][column]))
             {
-                maxValue = childDataPoint.GetComponent<ParticleAttributes>().KeyValue(column);
+                maxValue = Convert.ToSingle(pointList[i][column]);
             }
         }
-
         return maxValue;
     }
     /// <summary>
@@ -114,31 +103,18 @@ public class PlotController
     /// <param name="DataPointContainerTransform"></param>
     /// <param name="column"></param>
     /// <returns></returns>
-    public static float FindMinimumValueFromDataPointContainer(Transform DataPointContainerTransform, string column)
+    public static float FindMinimumValueFromDataPointContainer(List<Dictionary<string, object>> pointList, string column)
     {
         float minValue = float.MaxValue;
-        ParticleAttributes particleAttributes;
-        // If the transform is null, return a value of zero
-        if (DataPointContainerTransform == null)
+        // Store all data from files in data point
+        for (var i = 0; i < pointList.Count; i++)
         {
-            return 0;
-        }
-        // Iterate through all the point to figure out what the Lowest value is based off the input string.
-        foreach (Transform childDataPoint in DataPointContainerTransform)
-        {
-            particleAttributes = childDataPoint.GetComponent<ParticleAttributes>();
-            // If the Transform does not contain a ParticleAttributes component, return a value of zero
-            if (particleAttributes == null)
-            {
-                return 0;
-            }
             // Get the stored key value for the column value passed in
-            if (particleAttributes.KeyValue(column) < minValue)
+            if (Convert.ToSingle(pointList[i][column]) < minValue)
             {
-                minValue = childDataPoint.GetComponent<ParticleAttributes>().KeyValue(column);
+                minValue = Convert.ToSingle(pointList[i][column]);
             }
         }
-
         return minValue;
     }
     /// <summary>

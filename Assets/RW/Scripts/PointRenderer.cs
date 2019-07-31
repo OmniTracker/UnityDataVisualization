@@ -72,20 +72,19 @@ public class PointRenderer : MonoBehaviour
     /// <param name="yAxis"></param>
     /// <param name="zAxis"></param>
     /// <param name="pointHolderTransform"></param>
-    public void SetScatterPlotAxis(string inputFile, string xAxis, string yAxis, string zAxis, 
-                                    Transform pointHolderTransform)
+    public void SetScatterPlotAxis(string inputFile, string xAxis, string yAxis, string zAxis,
+                                    List<Dictionary<string, object>> pointList)
     {
-        int pointCount = pointHolderTransform.childCount;
         XAxis = xAxis;
         YAxis = yAxis;
         ZAxis = zAxis;
-        XMin = PlotController.FindMinimumValueFromDataPointContainer(pointHolderTransform, XAxis);
-        YMin = PlotController.FindMinimumValueFromDataPointContainer(pointHolderTransform, YAxis);
-        ZMin = PlotController.FindMinimumValueFromDataPointContainer(pointHolderTransform, ZAxis);
-        XMax = PlotController.FindMaximumValueFromDataPointContainer(pointHolderTransform, XAxis);
-        YMax = PlotController.FindMaximumValueFromDataPointContainer(pointHolderTransform, YAxis);
-        ZMax = PlotController.FindMaximumValueFromDataPointContainer(pointHolderTransform, ZAxis);
-        PlotController.AssignLabels(XAxis,YAxis,ZAxis,XMin,XMax,YMin,YMax,ZMin,ZMax, pointCount,
+        XMin = PlotController.FindMinimumValueFromDataPointContainer(pointList, XAxis);
+        YMin = PlotController.FindMinimumValueFromDataPointContainer(pointList, YAxis);
+        ZMin = PlotController.FindMinimumValueFromDataPointContainer(pointList, ZAxis);
+        XMax = PlotController.FindMaximumValueFromDataPointContainer(pointList, XAxis);
+        YMax = PlotController.FindMaximumValueFromDataPointContainer(pointList, YAxis);
+        ZMax = PlotController.FindMaximumValueFromDataPointContainer(pointList, ZAxis);
+        PlotController.AssignLabels(XAxis,YAxis,ZAxis,XMin,XMax,YMin,YMax,ZMin,ZMax, pointList.Count,
                                                inputFile);
     }
     /// <summary>
@@ -133,7 +132,7 @@ public class PointRenderer : MonoBehaviour
             {
                 dataPoint.GetComponent<ParticleAttributes>().PointData.Add(key, Convert.ToSingle(pointList[i][key]));
                 // I have no idea why the program fails if this line isn't here. I think it may be a race condition but not sure
-                Debug.Log(dataPoint.GetComponent<ParticleAttributes>().PointData);
+                Debug.Log(key + ":  " + dataPoint.GetComponent<ParticleAttributes>().KeyValue(key));
             }
             // Disable Gravity
             dataPoint.GetComponent<Rigidbody>().useGravity = false;
@@ -176,30 +175,30 @@ public class PointRenderer : MonoBehaviour
     /// <param name="magnetHolder"></param>
     /// <param name="magnetPrefab"></param>
     /// <param name="pointHolder"></param>
-    public void GenerateMagnets(List<string> magnetList, GameObject magnetHolder, GameObject magnetPrefab, GameObject pointHolder)
+    public void GenerateMagnets(List<string> magnetList, GameObject magnetHolder, GameObject magnetPrefab, List<Dictionary<string, object>> pointList)
     {
         float minPointValue, maxPointValue;
-        // Iterate though the column list to create the individual magnets
-        foreach (string key in magnetList)
+        // Store all data from files in data point
+        for (var i = 0; i < magnetList.Count; i++)
         {
             //instantiate as gameobject variable so that it can be manipulated within loop
             GameObject magnet = Instantiate(magnetPrefab, Vector3.zero, Quaternion.identity);
-            // Min and Max values for attraction 
-            minPointValue = PlotController.FindMinimumValueFromDataPointContainer(pointHolder.transform, key);
-            maxPointValue = PlotController.FindMaximumValueFromDataPointContainer(pointHolder.transform, key);
-            magnet.GetComponent<MagnetAttributes>().MinValue = minPointValue;
-            magnet.GetComponent<MagnetAttributes>().MaxValue = maxPointValue;
+            // Assigns name to the magnet
+            magnet.name = magnetList[i];
             // Set the name of the hovering label
-            magnet.transform.Find("Name").GetComponent<TextMesh>().text = key;
+            magnet.transform.Find("Name").GetComponent<TextMesh>().text = magnetList[i];
+            // Make child of PointHolder object, to keep particlePoints within container in hiearchy
+            magnet.transform.SetParent(magnetHolder.transform);
             // Set rigidbody component attributes
             magnet.GetComponent<Rigidbody>().useGravity = false;
             magnet.GetComponent<Rigidbody>().drag = 20;
-            // Assigns name to the magnet
-            magnet.name = key;
-            // Make child of PointHolder object, to keep particlePoints within container in hiearchy
-            magnet.transform.SetParent(magnetHolder.transform);
             // Set the Mass of the given rigid body to something large to keep the magnets from moving.
             magnet.GetComponent<Rigidbody>().mass = 1000;
+            maxPointValue = PlotController.FindMaximumValueFromDataPointContainer(pointList, magnetList[i]);
+            minPointValue = PlotController.FindMinimumValueFromDataPointContainer(pointList, magnetList[i]);
+            magnet.GetComponent<MagnetAttributes>().MinValue = minPointValue;
+            magnet.GetComponent<MagnetAttributes>().MaxValue = maxPointValue;
+
         }
     }
     /// <summary>

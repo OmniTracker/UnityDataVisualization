@@ -25,6 +25,7 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using System.Collections;
 
 public class GraphicalUserInterfaceController : MonoBehaviour
 {
@@ -104,17 +105,59 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     /// </summary>
     private void LoadDataFile()
     {
-        Debug.Log("This");
+        try
+        {
+            List<Dictionary<string, object>> pointList = CSVReader.Read(InputCSVFilename.Replace(".csv", ""));
+
+            if (MagnetHolder.transform.childCount != 0)
+            {
+                var magnetChildren = new List<GameObject>();
+                foreach (Transform magnetchild in MagnetHolder.transform)
+                {
+                    magnetChildren.Add(magnetchild.gameObject);
+                }
+                magnetChildren.ForEach(magnetchild => Destroy(magnetchild));
+            }
+            if (PointHolder.transform.childCount != 0)
+            {
+                var pointChildren = new List<GameObject>();
+                foreach (Transform pointChild in PointHolder.transform)
+                {
+                    pointChildren.Add(pointChild.gameObject);
+                }
+                pointChildren.ForEach(pointChild => Destroy(pointChild));
+            }
+            
+            SetFileDataPlot(pointList);
+        }
+        catch
+        {
+            
+        }
     }
     /// <summary>
     /// 
     /// </summary>
     private void SelectDataFile()
     {
-        // string fileName = OpenInFileBrowser.SelectCSVFile();
-
-        // Debug.Log(fileName);
+        // Set the internal flie name. This step will not change the GUI.
+        string[] selectFileReturnArray = OpenInFileBrowser.SelectCSVFile();
+        // Need to check
+        if ((selectFileReturnArray.Length == 2) && selectFileReturnArray[0].Contains(".csv") )
+        {
+            InputCSVFilename = selectFileReturnArray[0].Replace(".csv","");
+        }
     }
+
+    IEnumerator Example()
+    {
+        print(Time.time);
+        yield return new WaitForSeconds(20);
+        print(Time.time);
+    }
+
+    
+
     /// <summary>
     /// 
     /// </summary>
@@ -122,8 +165,17 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     {
         if (NewDataFileLoaded == true)
         {
-            SetFileDataPlot();
-            NewDataFileLoaded = false;
+            try
+            {
+                NewDataFileLoaded = false;
+                List<Dictionary<string, object>> pointList = CSVReader.Read(InputCSVFilename.Replace(".csv", ""));
+                SetFileDataPlot(pointList);
+            }
+            catch
+            {
+                return;
+            }
+
         }
         else
         {
@@ -157,11 +209,13 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     /// </summary>
     private void UpdateFileDataPlot()
     {
+        List<Dictionary<string, object>> pointList = CSVReader.Read(InputCSVFilename.Replace(".csv", ""));
+
         PointRendererObject.SetScatterPlotAxis(InputCSVFilename,
                                        MagnetList[XAxisDropDown.value],
                                        MagnetList[YAxisDropDown.value],
                                        MagnetList[ZAxisDropDown.value],
-                                       PointHolder.transform);
+                                       pointList);
         PointRendererObject.AlterPrefabParticlePoints(PointHolder.transform, ColorClassifierObject.Active);
     }
 
@@ -169,21 +223,25 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    private void SetFileDataPlot()
+    private void SetFileDataPlot(List<Dictionary<string, object>> pointList)
     {
-        List<Dictionary<string, object>> pointList = CSVReader.Read(InputCSVFilename);
-        MagnetList = new List<string>(pointList[1].Keys);
+        MagnetList.Clear();
+        MagnetList = new List<string>(pointList[0].Keys);
         FillDropDowns();
-        PointRendererObject.GeneratePrefabParticlePoints(pointList, MagnetList, PointHolder, PointPrefab);
-        PointRendererObject.GenerateMagnets(MagnetList, MagnetHolder, MagnetPrefab, PointHolder);
         XAxisDropDown.value = 1;
         YAxisDropDown.value = 2;
         ZAxisDropDown.value = 3;
-        PointRendererObject.SetScatterPlotAxis(InputCSVFilename, 
-                                       MagnetList[XAxisDropDown.value], 
-                                       MagnetList[YAxisDropDown.value], 
-                                       MagnetList[ZAxisDropDown.value], 
-                                       PointHolder.transform);
+
+        PointRendererObject.GeneratePrefabParticlePoints(pointList, MagnetList, PointHolder, PointPrefab);
+        PointRendererObject.SetScatterPlotAxis(InputCSVFilename,
+                               MagnetList[XAxisDropDown.value],
+                               MagnetList[YAxisDropDown.value],
+                               MagnetList[ZAxisDropDown.value],
+                               pointList);
+
+
+        PointRendererObject.GenerateMagnets(MagnetList, MagnetHolder, MagnetPrefab, pointList);
+
         PointRendererObject.PlacePrefabParticlePoints(PointHolder.transform, ColorClassifierObject.Active);
         PointRendererObject.PlaceMagnets(MagnetHolder.transform);
         // Generate Springs Between Particles and origin 
@@ -195,6 +253,7 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     private void CheckMagnetAttributesUI ()
     {
         string magnetName = SelectMagnetDropDown.options[SelectMagnetDropDown.value].text;
+
         MagnetAttributes magnetAttributes = MagnetHolder.transform.Find(magnetName).transform.GetComponent<MagnetAttributes>();
         if (magnetAttributes.name != m_PreviouslySelectedMagnet)
         {
@@ -278,7 +337,8 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         }
     }
     /// <summary>
-    /// 
+    /// Handles the color correlation portion of the graph. The color of the points above and below the selected threshhold takes
+    /// on the color of the magnet select to change color.
     /// </summary>
     private void CheckColorCorrelationUI()
     {
@@ -315,7 +375,7 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         }
     }
     /// <summary>
-    /// 
+    /// Automatically Fills all the dropdown menus in the scene.
     /// </summary>
     private void FillDropDowns ()
     {

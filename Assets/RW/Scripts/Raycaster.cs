@@ -45,7 +45,7 @@ public class Raycaster : MonoBehaviour
     void Start()
     {
          InvokeRepeating("UpdateRaycaster", 2.0f, 0.2f);
-        // InvokeRepeating("UpdateRaycasterForPointDataAndMagnets", 2.0f, 0.02f);
+         InvokeRepeating("UpdateRaycasterForPointDataAndMagnets", 2.0f, 0.02f);
     }
     private void UpdateRaycaster()
     {
