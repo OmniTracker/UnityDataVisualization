@@ -25,7 +25,6 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
-using System.Globalization;
 
 public class GraphicalUserInterfaceController : MonoBehaviour
 {
@@ -52,9 +51,14 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     public Toggle EnableLineRender;
     public Text ColorCorrelationMinimumValueTextField;
     public Text ColorCorrelationMaximumValueTextField;
+    
     public InputField ColorCorrelationMidPointInputField;
     public InputField MagnetStrengthPercentInputField;
     public InputField ParticleMassInputField;
+    // Buttons used for Setting and Loading Data files
+    public Button LoadDataButton;
+    public Button SelectDataButton;
+    public Text FileNameText;
     // Allows the user to Show or hide the GUI
     public Toggle EnableGUICanvas;
     public Button RevertToPreviousScene;
@@ -65,6 +69,7 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     // Set the first data file that needs to be loaded
     public string InputCSVFilename;
     private string m_DynamicPointRenderingMagnetName = "";
+    // Getters and Setters
     private LineRenderer m_DynamicLineRenderer;
     private List<string> m_MagnetList;
     private bool m_NewDataFileLoaded = true;
@@ -89,7 +94,26 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         AllowColorClassifier.isOn = ColorClassifierObject.Active;
         DynamicLineRenderer = GetComponent<LineRenderer>();
         DynamicLineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-        GUICanvas = GameObject.Find("MainContolPanel"); 
+        GUICanvas = GameObject.Find("MainContolPanel");
+        LoadDataButton.onClick.AddListener(() => LoadDataFile());
+        SelectDataButton.onClick.AddListener(() => SelectDataFile());
+
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    private void LoadDataFile()
+    {
+        Debug.Log("This");
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    private void SelectDataFile()
+    {
+        // string fileName = OpenInFileBrowser.SelectCSVFile();
+
+        // Debug.Log(fileName);
     }
     /// <summary>
     /// 
@@ -140,6 +164,8 @@ public class GraphicalUserInterfaceController : MonoBehaviour
                                        PointHolder.transform);
         PointRendererObject.AlterPrefabParticlePoints(PointHolder.transform, ColorClassifierObject.Active);
     }
+
+
     /// <summary>
     /// 
     /// </summary>

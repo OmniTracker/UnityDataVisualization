@@ -73,6 +73,7 @@
     <Compile Include="Assets\RW\Scripts\MagnetAttributes.cs" />
     <Compile Include="Assets\RW\Scripts\MouseDrag.cs" />
     <Compile Include="Assets\RW\Scripts\ObjectForceHandler.cs" />
+    <Compile Include="Assets\RW\Scripts\OpenInFileBrowser.cs" />
     <Compile Include="Assets\RW\Scripts\ParticleAttributes.cs" />
     <Compile Include="Assets\RW\Scripts\PlotController.cs" />
     <Compile Include="Assets\RW\Scripts\PointRenderer.cs" />
