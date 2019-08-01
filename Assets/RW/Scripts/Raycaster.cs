@@ -151,31 +151,4 @@ public class Raycaster : MonoBehaviour
             }
         }
     }
-
-    /*
-     * Code that I may use later. Removed
-if (MagnetHolder.transform.childCount != 0 && PointHolder.transform.childCount != 0)
-{
-    string magnetDataMenuString = "";
-    string pointDataMenuString = "";
-    MagnetAttributes magnetAttribute;
-    pointDataMenuString = "Point Name: " + gameObject.name;
-    // Iterate through Point Data Dictionary
-    foreach (var point in gameObject.GetComponent<ParticleAttributes>().PointData)
-    {
-        pointDataMenuString += "\nVariable : " + point.Key + " Value: " + point.Value;
-        magnetAttribute = MagnetHolder.transform.Find(point.Key).GetComponent<MagnetAttributes>();
-        magnetDataMenuString += "Magnet : " + point.Key +
-                                "  Strength: " + ((point.Value - magnetAttribute.MinValue) /
-                                                (magnetAttribute.MaxValue - magnetAttribute.MinValue)) +
-                                "\nMin: " + magnetAttribute.MinValue +
-                                " Max: " + magnetAttribute.MaxValue + "\n";
-
-    }
-    // Fill menus
-    MagnetDataMenu.text = magnetDataMenuString;
-    PointDataMenu.text = pointDataMenuString;
-}*/
-
-
 }

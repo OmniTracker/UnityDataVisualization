@@ -84,7 +84,8 @@ public class GraphicalUserInterfaceController : MonoBehaviour
 
     GameObject GUICanvas;
     /// <summary>
-    /// 
+    ///  Used to instantiate all objects and setup all the necessary flags and data structures needed
+    ///  for this class to properly operate.
     /// </summary>
     private void Start()
     {
@@ -101,6 +102,8 @@ public class GraphicalUserInterfaceController : MonoBehaviour
 
     }
     /// <summary>
+    /// Used to load a new data file to the scene. If a new has not been selected, the load button 
+    /// will opt tt load the previous data file again. If the file is incorrect for some reason,
     /// 
     /// </summary>
     private void LoadDataFile()
@@ -148,16 +151,15 @@ public class GraphicalUserInterfaceController : MonoBehaviour
             InputCSVFilename = selectFileReturnArray[0].Replace(".csv","");
         }
     }
-
+    /// <summary>
+    /// This is only in the file while attempting to debug an issue.
+    /// </summary>
     IEnumerator Example()
     {
         print(Time.time);
         yield return new WaitForSeconds(20);
         print(Time.time);
     }
-
-    
-
     /// <summary>
     /// 
     /// </summary>
@@ -193,7 +195,8 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         PlotController.OrientLables();
     }
     /// <summary>
-    /// 
+    ///  Used to update the particle points in the scene based the selected drop down menu options.
+    ///  If the droddown menu options are changes, this will cause the plots to adjust accordingly.
     /// </summary>
     private void CheckScatterPlotAttributesUI()
     {
@@ -221,7 +224,9 @@ public class GraphicalUserInterfaceController : MonoBehaviour
 
 
     /// <summary>
-    /// 
+    /// Handle the generation of the particle points and the magnets in the scene. This fuction also
+    /// handles placing the points in the correct places in the scene and connecting the particle
+    /// point to the "springs"
     /// </summary>
     private void SetFileDataPlot(List<Dictionary<string, object>> pointList)
     {
@@ -231,29 +236,24 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         XAxisDropDown.value = 1;
         YAxisDropDown.value = 2;
         ZAxisDropDown.value = 3;
-
         PointRendererObject.GeneratePrefabParticlePoints(pointList, MagnetList, PointHolder, PointPrefab);
         PointRendererObject.SetScatterPlotAxis(InputCSVFilename,
                                MagnetList[XAxisDropDown.value],
                                MagnetList[YAxisDropDown.value],
                                MagnetList[ZAxisDropDown.value],
                                pointList);
-
-
         PointRendererObject.GenerateMagnets(MagnetList, MagnetHolder, MagnetPrefab, pointList);
-
         PointRendererObject.PlacePrefabParticlePoints(PointHolder.transform, ColorClassifierObject.Active);
         PointRendererObject.PlaceMagnets(MagnetHolder.transform);
         // Generate Springs Between Particles and origin 
         DynamicPointToPointLineRender.GenerateLinksBetweenParticleAndOrigin(PointHolder.transform); 
     }
     /// <summary>
-    /// 
+    ///  Used to handle the Magnet Attributes. 
     /// </summary>
     private void CheckMagnetAttributesUI ()
     {
         string magnetName = SelectMagnetDropDown.options[SelectMagnetDropDown.value].text;
-
         MagnetAttributes magnetAttributes = MagnetHolder.transform.Find(magnetName).transform.GetComponent<MagnetAttributes>();
         if (magnetAttributes.name != m_PreviouslySelectedMagnet)
         {
@@ -289,7 +289,9 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         }
     }
     /// <summary>
-    /// 
+    ///  Used to handle all the attribute of the Particle Points. This includes updating the 
+    ///  the linerender of the particle points to the origin lines and setting the mass of the particle
+    ///  points
     /// </summary>
     private void CheckParticlePointAttributesUI ()
     {
@@ -320,7 +322,8 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         }
     }
     /// <summary>
-    /// Handles 
+    /// Handles
+    ///  Used to handle the view of the LineRender in the scene.
     /// </summary>
     private void CheckDynamicLineRenderingUI ()
     {
@@ -356,7 +359,7 @@ public class GraphicalUserInterfaceController : MonoBehaviour
             float maxvalue = magnetAttributes.MaxValue;
 
             if ( ( float.TryParse(ColorCorrelationMidPointInputField.text, out float cutOffValue) == true) &&
-                 ( minValue <= cutOffValue )  && 
+                 ( 0 <= cutOffValue )  && 
                  ( cutOffValue <= maxvalue ) )
             {
                 string cutOffOption = ColorCorrelationAboveOrBelowMidPointDropDown.options[ColorCorrelationAboveOrBelowMidPointDropDown.value].text;
