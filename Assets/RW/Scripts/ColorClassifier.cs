@@ -13,7 +13,8 @@
  *      (7/11/2019) - Software Refactor - This file was generated to handle the
  *                    color of the magnets and also the color correlation for 
  *                    each of the data points if the color classifier is enabled
- *      (7/21/2019) - Adding color alteration based off specified values.              
+ *      (7/21/2019) - Adding color alteration based off specified values.  
+ *      (8/01/2019) - Finished comments for file
  *-----------------------------------------------------------------------------
  * This program is free software: you can redistribute it and/or modify it 
  * under the terms of the GNU General Public License as published by the Free 
@@ -66,13 +67,17 @@ public class ColorClassifier : MonoBehaviour
         return new Color(r,g,b, 1.0f); 
     }
     /// <summary>
-    /// 
+    /// Used to select the points that should be altered based off the values passed in.
+    //  This function used the attributes of the selected magnet to change the color of
+    //  points to either the color of the magnet or white. If the color of point appears
+    //  to be white, this means the caller of the function has not set parameter to 
+    //  set a color to these given points.
     /// </summary>
-    /// <param name="pointHolderTransform"></param>
-    /// <param name="targetColor"></param>
-    /// <param name="magnetName"></param>
-    /// <param name="direction"></param>
-    /// <param name="cutOff"></param>
+    /// <param name="pointHolderTransform">Holds all the particle point data</param>
+    /// <param name="targetColor">The target color of the point. This is assumed to be the color of the selected magnet</param>
+    /// <param name="magnetName">The name of the magnet selected for color change</param>
+    /// <param name="direction">The direction, Above or Below, which the user wants the points in the graph to be altered</param>
+    /// <param name="cutOff">The cutoff point for color change. This value should be between the minimum and maximum value of the associated magnet value</param>
     public void AlterScatterPlotColorsBasedOnInput(Transform pointHolderTransform, 
                                                           Color targetColor, 
                                                           string magnetName, 
