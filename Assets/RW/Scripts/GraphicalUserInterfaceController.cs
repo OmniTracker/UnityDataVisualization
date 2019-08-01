@@ -284,7 +284,7 @@ public class GraphicalUserInterfaceController : MonoBehaviour
             }
             else
             {
-                MagnetStrengthPercentInputField.text = "";
+                magnetAttributes.MagnetismStrength = 100.0f;
             }
         }
     }
@@ -320,7 +320,7 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         }
     }
     /// <summary>
-    /// 
+    /// Handles 
     /// </summary>
     private void CheckDynamicLineRenderingUI ()
     {
