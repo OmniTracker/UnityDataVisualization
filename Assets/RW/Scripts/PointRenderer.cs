@@ -70,10 +70,14 @@ public class PointRenderer : MonoBehaviour
     /// Assign all the label for the scatter plot axis
     /// </summary>
     /// <param name="inputFile"></param>
-    /// <param name="xAxis"></param>
-    /// <param name="yAxis"></param>
-    /// <param name="zAxis"></param>
-    /// <param name="pointList"></param>
+    /// <param name="xAxis">Name of the XAxis
+    /// </param>
+    /// <param name="yAxis">Name of the YAxis
+    /// </param>
+    /// <param name="zAxis">Name of the ZAxis
+    /// </param>
+    /// <param name="pointList">Point list collected from the designated csv file.
+    /// </param>
     public void SetScatterPlotAxis(string inputFile, string xAxis, string yAxis, 
                                    string zAxis,
                                     List<Dictionary<string, object>> pointList)
@@ -103,7 +107,8 @@ public class PointRenderer : MonoBehaviour
     /// <summary>
     /// Alter Prefab Particle Points to new plotted position.
     /// </summary>
-    /// <param name="pointHolderTransform"></param>
+    /// <param name="pointHolderTransform"> Transform of parent gameobject, whish holds
+    /// all the </param>
     /// <param name="colorClassifierActive"></param>
     public void AlterPrefabParticlePoints(Transform pointHolderTransform, 
                                           bool colorClassifierActive)
