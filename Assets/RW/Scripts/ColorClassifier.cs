@@ -15,7 +15,7 @@
  *                    each of the data points if the color classifier is 
  *                    enabled
  *      (7/21/2019) - Adding color alteration based off specified values.  
- *      (8/01/2019) - Finished comments for file
+ *      (8/02/2019) - Finished comments for file
  *-----------------------------------------------------------------------------
  * This program is free software: you can redistribute it and/or modify it 
  * under the terms of the GNU General Public License as published by the Free 
@@ -44,7 +44,7 @@ public class ColorClassifier : MonoBehaviour
                                        }
 
     /// <summary>
-    /// Used to generate a random color based of the min and max values
+    /// Used to generate a random color based of the min and max values.
     /// </summary>
     /// <param name="minimum"> Minimum range value to produce a color</param>
     /// <param name="maximum"> Maxium range value to produce a color.</param>
@@ -76,21 +76,24 @@ public class ColorClassifier : MonoBehaviour
     }
     /// <summary>
     /// Used to select the points that should be altered based off the values 
-    /// passed in.This function used the attributes of the selected magnet to 
-    /// change the color of points to either the color of the magnet or white. 
-    /// If the color of point appears to be white, this means the caller of the 
-    /// function has not set parameter to set a color to these given points.
+    /// passed in.This function uses the attributes of the selected magnet to 
+    /// change the color of points to either the color of the derived from the
+    /// magnet or white, which means the point has not met the requirements for
+    /// for color change. 
     /// </summary>
-    /// <param name="pointHolderTransform">Holds all the particle point data
+    /// <param name="pointHolderTransform">Parent point holder transform. Used to
+    /// access the children data points.
     /// </param>
-    /// <param name="targetColor">The target color of the point. This is 
-    /// assumed to be the color of the selected magnet
+    /// <param name="targetColor">The target color of the point. For the purpose
+    /// of this application, it is assumed that the color passed in correlates
+    /// to a specific magnet.
     /// </param>
-    /// <param name="magnetName">The name of the magnet selected for color 
-    /// change
+    /// <param name="magnetName">The name of the magnet in which the color 
+    /// has be derived from.
     /// </param>
-    /// <param name="direction">The direction, Above or Below, which the user 
-    /// wants the points in the graph to be altered
+    /// <param name="direction">The direction which the user wants the points 
+    /// in the graph to be altered. The two choice are either above or below the
+    /// input cutoff threshold
     /// </param>
     /// <param name="cutOff">The cutoff point for color change. This value 
     /// should be between the minimum and maximum value of the associated 
