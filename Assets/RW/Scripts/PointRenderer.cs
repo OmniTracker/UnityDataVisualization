@@ -78,11 +78,11 @@ public class PointRenderer : MonoBehaviour
                                    string zAxis,
                                     List<Dictionary<string, object>> pointList)
     {
-        // 
+        // Set the object string variables for the x,y,z 
         XAxis = xAxis;
         YAxis = yAxis;
         ZAxis = zAxis;
-        // 
+        // Get the min / max values
         XMin = PlotController.FindMinimumValueFromDataPointContainer(pointList, 
                                                                      XAxis);
         YMin = PlotController.FindMinimumValueFromDataPointContainer(pointList, 
@@ -95,7 +95,7 @@ public class PointRenderer : MonoBehaviour
                                                                      YAxis);
         ZMax = PlotController.FindMaximumValueFromDataPointContainer(pointList, 
                                                                      ZAxis);
-        //
+        // Assign all the plot information
         PlotController.AssignLabels(XAxis,YAxis,ZAxis,XMin,XMax,YMin,YMax,ZMin,
                                     ZMax, pointList.Count,inputFile);
     }
@@ -115,7 +115,8 @@ public class PointRenderer : MonoBehaviour
         foreach (Transform childDataPoint in pointHolderTransform)
         {
 
-            // 
+            // Get the scaled x, y, z coordinate values based off the 
+	    // retrieve min and max values.
             x = (childDataPoint.GetComponent<ParticleAttributes>()
                 .KeyValue(XAxis) - XMin) / (XMax - XMin);
             y = (childDataPoint.GetComponent<ParticleAttributes>()
@@ -190,9 +191,10 @@ public class PointRenderer : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Places the data points in the scene based of the specified min and max
+    /// values.
     /// </summary>
-    /// <param name="pointHolderTransform"></param>
+    /// <param name="pointHolderTransform"> </param>
     /// <param name="colorClassifierActive"></param>
 	public void PlacePrefabParticlePoints(Transform pointHolderTransform,
                                           bool colorClassifierActive)
@@ -209,7 +211,7 @@ public class PointRenderer : MonoBehaviour
                 .KeyValue(YAxis) - YMin) / (YMax - YMin);
             z = (childDataPoint.GetComponent<ParticleAttributes>()
                 .KeyValue(ZAxis) - ZMin) / (ZMax - ZMin);
-            // 
+            // Set the local position 
             childDataPoint.localPosition = new Vector3(x, y, z) * plotScale;
             // 
             childDataPoint.localScale = new Vector3(pointScale, 
@@ -227,14 +229,19 @@ public class PointRenderer : MonoBehaviour
             }
         }
     }
-
     /// <summary>
-    /// 
+    /// Generate the magnet based on the values found within the
     /// </summary>
-    /// <param name="magnetList"></param>
-    /// <param name="magnetHolder"></param>
-    /// <param name="magnetPrefab"></param>
-    /// <param name="pointList"></param>
+    /// <param name="magnetList"> List of the name of all themagnets in the project
+    /// </param>
+    /// <param name="magnetHolder"> The parent magnet holder which holds all the the 
+    /// children magnets.
+    /// </param>
+    /// <param name="magnetPrefab"> The magnet prefab, which is generated in the unity
+    /// inspector.
+    /// </param>
+    /// <param name="pointList"> All the point data colected from the CSV file.
+    /// </param>
     public void GenerateMagnets(List<string> magnetList,
                                 GameObject magnetHolder, 
                                 GameObject magnetPrefab, 
@@ -263,24 +270,27 @@ public class PointRenderer : MonoBehaviour
             // Set the Mass of the given rigid body to something large to keep 
             // the magnets from moving.
             magnet.GetComponent<Rigidbody>().mass = 1000;
-            // 
+            // Collect the min and max value of the magnets.
             maxPointValue = PlotController
                 .FindMaximumValueFromDataPointContainer(pointList, 
                                                         magnetList[i]);
-
             minPointValue = PlotController
                 .FindMinimumValueFromDataPointContainer(pointList, 
                                                         magnetList[i]);
-            // 
+            // Set the min and max values in the magnet gameobject component 
             magnet.GetComponent<MagnetAttributes>().MinValue = minPointValue;
             magnet.GetComponent<MagnetAttributes>().MaxValue = maxPointValue;
 
         }
     }
     /// <summary>
-    /// 
+    /// Simply place the magnets in a circle around the scene. From visual observation
+    /// the magnets won't always be evenly placed in a circle, but they will all have 
+    /// the same radius from the center of the graph.
     /// </summary>
-    /// <param name="magnetHolderTransform"></param>
+    /// <param name="magnetHolderTransform"> The parent transform which holds all the 
+    /// childer magnet gameobjects in the scene.
+    /// </param>
     public void PlaceMagnets(Transform magnetHolderTransform)
     {
         float x,z;
@@ -315,16 +325,17 @@ public class PointRenderer : MonoBehaviour
         }
     }
     /// <summary>
-    /// 
+    /// Updates the data point mass.
     /// </summary>
     /// <param name="pointHolderTransform"></param>
-    /// <param name="newMass"></param>
+    /// <param name="newMass">The new mass entered from the UI 
+    /// </param>
     public void UpdateParticlePointsMass(Transform pointHolderTransform, 
                                         float newMass)
     {
-        // 
+        // set the mas within this class
         SetParticleMass = newMass;
-        // 
+        // Iterate through all the data point objects and set the new mass.
         foreach (Transform childDataPoint in pointHolderTransform)
         {
             childDataPoint.GetComponent<Rigidbody>().mass = newMass;
