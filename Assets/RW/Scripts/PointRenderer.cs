@@ -129,11 +129,10 @@ public class PointRenderer : MonoBehaviour
             z = (childDataPoint.GetComponent<ParticleAttributes>()
                 .KeyValue(ZAxis) - ZMin) / (ZMax - ZMin);
 
-            // 
             childDataPoint.localScale = new Vector3(pointScale, 
                                                     pointScale, 
                                                     pointScale);
-            //
+
             childDataPoint.GetComponent<ParticleAttributes>().OriginLocation = 
                 (new Vector3(x, y, z) * plotScale) + 
                 childDataPoint.transform.parent.localPosition;

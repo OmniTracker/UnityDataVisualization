@@ -14,7 +14,6 @@
     public string Name { get => name1;
                          set => name1 = value; }
     private string name1;
-
     /// <summary>
     /// Upon Starting, the color for the magnet will be randomly set. 
     /// </summary>
@@ -30,13 +29,11 @@
         // Set the color for this Game Object
         this.GetComponent<Renderer>().material.color = m_SetColor;
     }
-
-    /// <summary>    /// On the mouse drag will move the position of the magnet. For the     /// purpose of the Standalone portion of the project, the distance has been     /// set to a static value. If you would like the magnet to be further away     /// from the player, just change the "distance" value.    /// </summary>    private void OnMouseDrag()     {        Vector3 mousePosition = new Vector3(Input.mousePosition.x,                                             Input.mousePosition.y,                                             distance);        Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);        transform.position = objPosition;    }    /// <summary>    /// Calculates the attraction force.    /// </summary>    /// <returns>The attraction force.</returns>    /// <param name="incomingPointValue">Incoming point value.</param>    public float CalculateAttractionForce(float incomingPointValue )    {        //        if (magnetActive && MagnetVisible)        {            //            if ((m_MinValue <= incomingPointValue) &&                 (incomingPointValue <= m_MaxValue))            {                //                 return ((incomingPointValue - m_MinValue) /                         (m_MaxValue - m_MinValue)) *                         MagnetismStrength * 2;             }        }        return 0;    }    /// <summary>    /// Calculates the direction.    /// </summary>    /// <returns>The direction.</returns>    /// <param name="target">Target.</param>    public Vector3 CalculateDirection ( Vector3 target )    {        return LastPosition - target;     }    /// <summary>
+    /// <summary>    /// On the mouse drag will move the position of the magnet. For the     /// purpose of the Standalone portion of the project, the distance has been     /// set to a static value. If you would like the magnet to be further away     /// from the player, just change the "distance" value.    /// </summary>    private void OnMouseDrag()     {        Vector3 mousePosition = new Vector3(Input.mousePosition.x,                                             Input.mousePosition.y,                                             distance);        Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);        transform.position = objPosition;    }    /// <summary>    /// Calculates the attraction force.    /// </summary>    /// <returns>The attraction force.</returns>    /// <param name="incomingPointValue">Incoming point value.</param>    public float CalculateAttractionForce(float incomingPointValue )    {        //        if (magnetActive && MagnetVisible)        {            //            if ((m_MinValue <= incomingPointValue) &&                 (incomingPointValue <= m_MaxValue))            {                //                 return ((incomingPointValue - m_MinValue) /                         (m_MaxValue - m_MinValue)) *                         MagnetismStrength * 2;             }        }        return 0;    }    /// <summary>    /// Calculates the direction.    /// </summary>    /// <returns>The direction.</returns>    /// <param name="target">Target.</param>    public Vector3 CalculateDirection ( Vector3 target )    {        return LastPosition - target;     }    /// <summary>
     /// Sets and store the color of the of the magnet. This was written so the 
     /// object has easy access to the selected color without having to access 
     /// the Render of the game object.
     /// </summary>    public void SetColorForMagnet(Color color)
     {
-        // 
         this.GetComponent<Renderer>().material.color = m_SetColor = color; 
     }}

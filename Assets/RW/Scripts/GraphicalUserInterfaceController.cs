@@ -25,10 +25,12 @@
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for 
  * more details.
  */
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.XR;
 
 public class GraphicalUserInterfaceController : MonoBehaviour
 {
@@ -65,6 +67,7 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     // Buttons used for Setting and Loading Data files
     public Button LoadDataButton;
     public Button SelectDataButton;
+    public Button LoadMainScene;
     public Text FileNameText;
     // Allows the user to Show or hide the GUI
     public Toggle EnableGUICanvas;
@@ -100,6 +103,13 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     /// </summary>
     private void Start()
     {
+        // If this is starting, then we have already checked for Vive being hooked up. We just need
+        // to make sure that it hasn't been turned off for some reason.
+        if (XRDevice.isPresent)
+        {
+            XRSettings.enabled = true;
+        }
+        // Let's get to the rest of the setup
         EnableLineRender.isOn = false; 
         // instantiate objects needed for this project
         ColorClassifierObject = new ColorClassifier();
@@ -112,7 +122,15 @@ public class GraphicalUserInterfaceController : MonoBehaviour
         // Add Listeners to recieve notifications that a button has been pressed.
         LoadDataButton.onClick.AddListener(() => LoadDataFile());
         SelectDataButton.onClick.AddListener(() => SelectDataFile());
-
+        LoadMainScene.onClick.AddListener(() => LoadMainScreen());
+    }
+    /// <summary>
+    /// This function is pretty much self explanatory
+    /// </summary>
+    private void LoadMainScreen ()
+    {
+        int m_MainSceneIndex = 0;
+        SceneManager.LoadScene(m_MainSceneIndex);
     }
     /// <summary>
     /// Used to load a new data file to the scene. If a new has not been 

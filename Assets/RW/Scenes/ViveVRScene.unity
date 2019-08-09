@@ -8332,7 +8332,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Set Mid Point Value
+  m_Text: 0
 --- !u!222 &1073550276
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10227,7 +10227,7 @@ MonoBehaviour:
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 1362856666}
-  m_TextComponent: {fileID: 1635160007}
+  m_TextComponent: {fileID: 0}
   m_Placeholder: {fileID: 1073550275}
   m_ContentType: 0
   m_InputType: 0
@@ -13846,7 +13846,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '+100 / -100 % '
+  m_Text: 0
 --- !u!222 &1810025316
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14508,6 +14508,7 @@ MonoBehaviour:
   ParticleMassInputField: {fileID: 441669854}
   LoadDataButton: {fileID: 0}
   SelectDataButton: {fileID: 0}
+  LoadMainScene: {fileID: 0}
   FileNameText: {fileID: 0}
   EnableGUICanvas: {fileID: 106841333}
   RevertToPreviousScene: {fileID: 0}
@@ -20899,7 +20900,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Particle Mass
+  m_Text: 0
 --- !u!222 &2060389984
 CanvasRenderer:
   m_ObjectHideFlags: 0

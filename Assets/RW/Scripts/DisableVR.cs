@@ -23,8 +23,6 @@
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
