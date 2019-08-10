@@ -33,6 +33,7 @@ using Valve.VR;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Globalization;
+using UnityEngine.XR;
 
 public class Raycaster : MonoBehaviour
 {
@@ -46,6 +47,12 @@ public class Raycaster : MonoBehaviour
     float m_distanceFromHandAndMagnet = 0;
     Quaternion m_LastRotation;
 
+
+    // Didn't want to put these here, but having issues altering the values in the fields
+    public InputField ColorCorrelationMidPointInputField;
+    public InputField MagnetStrengthPercentInputField;
+    public InputField ParticleMassInputField;
+
     /// <summary>
     /// Used to setup the periodic calls to the UpdateRaycaster and 
     /// UpdateRaycasterForPointDataAndMagnets function calls. The rate at which
@@ -53,7 +60,10 @@ public class Raycaster : MonoBehaviour
     /// </summary>
     void Start()
     {
-         InvokeRepeating("UpdateRaycaster", 2.0f, 0.2f);
+        // If this is starting, then we have already checked for Vive being hooked up. We just need
+        // to make sure that it hasn't been turned off for some reason.
+        XRSettings.enabled = true;
+        InvokeRepeating("UpdateRaycaster", 2.0f, 0.2f);
          InvokeRepeating("UpdateRaycasterForPointDataAndMagnets", 2.0f, 0.02f);
     }
     private void UpdateRaycaster()
@@ -180,7 +190,7 @@ public class Raycaster : MonoBehaviour
         }
 
         // Check if the tag of the game object is a Toggle
-        if (gameObject.name.Contains("Toggle"))
+        if (gameObject.name.Contains("Toggle") || gameObject.name.Contains("Activate"))
         {
             Toggle toggle = GameObject.Find(gameObject.name)
                 .GetComponent<Toggle>();
@@ -196,7 +206,7 @@ public class Raycaster : MonoBehaviour
         }
 
         // Check if the tag of the game object is a Button
-        if(gameObject.name.Contains("utton"))
+        if(gameObject.name.Contains("Button"))
         {
             // This is pretty dirty, but I want to finish this now.
             // I would have done this cleaner, but this is the last day before I do my final push.
@@ -208,7 +218,7 @@ public class Raycaster : MonoBehaviour
             else if (gameObject.name.Contains("MidPointInput")) 
             {
                 // Get the field
-                string currentStringValue = GameObject.Find("MidPointInputFieldText").GetComponent<InputField>().textComponent.ToString();
+                string currentStringValue = ColorCorrelationMidPointInputField.text;
                 float currentFloatValue;
                 // This basically means the value is zero.
                 if (currentStringValue == "")
@@ -223,20 +233,19 @@ public class Raycaster : MonoBehaviour
                 // introduce a bug.
                 if (gameObject.name.Contains("Up"))
                 {
-                    currentFloatValue += 1.0f;
+                    currentFloatValue += 5.0f;
                 }
                 else if (gameObject.name.Contains("Down"))
                 {
-                    currentFloatValue -= 1.0f;
+                    currentFloatValue -= 5.0f;
                 }
-                GameObject.Find("MidPointInputFieldText").GetComponent<InputField>().text = currentFloatValue.ToString();
+                ColorCorrelationMidPointInputField.text = currentFloatValue.ToString();
             }
             else if (gameObject.name.Contains("ParticleMassInput"))
             {
                 // Get the field
 
-                string currentStringValue = GameObject.Find("ParticleMassInputFieldText")
-                                                      .GetComponent<Text>().text;
+                string currentStringValue = ParticleMassInputField.text;
                 float currentFloatValue;
 
                 // This basically means the value is zero.
@@ -258,13 +267,12 @@ public class Raycaster : MonoBehaviour
                 {
                     currentFloatValue += 10.0f;
                 }
-                GameObject.Find("ParticleMassInputFieldText").GetComponent<Text>().text = currentFloatValue.ToString();
+                ParticleMassInputField.text = currentFloatValue.ToString();
             }
             else if (gameObject.name.Contains("MagnetStrengthPercentInput"))
             {
                 // Get the field
-                string currentStringValue = GameObject.Find("MagnetStrengthPercentInputFieldText")
-                                                      .GetComponent<Text>().text;
+                string currentStringValue = MagnetStrengthPercentInputField.text;
                 float currentFloatValue;
                 // This basically means the value is zero.
                 if (currentStringValue == "")
@@ -284,7 +292,7 @@ public class Raycaster : MonoBehaviour
                 {
                     currentFloatValue -= 10.0f;
                 }
-                GameObject.Find("MagnetStrengthPercentInputFieldText").GetComponent<Text>().text = currentFloatValue.ToString();
+                MagnetStrengthPercentInputField.text = currentFloatValue.ToString();
             }
         }
     }

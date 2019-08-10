@@ -28,7 +28,7 @@ using UnityEngine;
 public class ObjectForceHandler : MonoBehaviour
 {
     // 
-    private float springConstant = 8.0f;
+    private float springConstant = 40.0f;
     // Object which will contain instantiated prefabs in hiearchy
     public GameObject PointHolder;
     // Object which will contain instantiated prefabs in hiearchy
@@ -39,8 +39,8 @@ public class ObjectForceHandler : MonoBehaviour
     /// </summary>
     void Start()
     {
-        InvokeRepeating("UseMagnets", 2.0f, 0.25f);
-        InvokeRepeating("SpringBackToOrigin", 2.0f, .05f);
+        InvokeRepeating("UseMagnets", 2.0f, 0.3f);
+        InvokeRepeating("SpringBackToOrigin", 2.0f, 0.3f);
     }
 
     /// <summary>

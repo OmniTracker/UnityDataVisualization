@@ -58,6 +58,11 @@ public class IntroductionScene : MonoBehaviour
         int dropDownIndex = m_Dropdown.value + 1;
         if (m_Debug)
             Debug.Log("Selected Dropdown Index :" + dropDownIndex);
+
+        if (dropDownIndex == 2)
+        {
+            XRSettings.enabled = true;
+        }
         SceneManager.LoadScene(dropDownIndex);
     }
 

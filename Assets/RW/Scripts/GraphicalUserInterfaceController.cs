@@ -103,12 +103,6 @@ public class GraphicalUserInterfaceController : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        // If this is starting, then we have already checked for Vive being hooked up. We just need
-        // to make sure that it hasn't been turned off for some reason.
-        if (XRDevice.isPresent)
-        {
-            XRSettings.enabled = true;
-        }
         // Let's get to the rest of the setup
         EnableLineRender.isOn = false; 
         // instantiate objects needed for this project
@@ -360,7 +354,7 @@ public class GraphicalUserInterfaceController : MonoBehaviour
                  out float percentage) == true) &&
                 percentage >= -100.0f &&
                 percentage <= 100.0f)  {
-                magnetAttributes.MagnetismStrength = (percentage / 10.0f);
+                magnetAttributes.MagnetismStrength = percentage / 1.0f;
             }
             else
             {
